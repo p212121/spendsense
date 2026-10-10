@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>SpendSense — Understand Your Spending</title>
+  <meta name="description" content="Lightweight, mobile-first, privacy-first personal finance tracker with zero server latency, instant expense logging, and budget alerts.">
+  <meta name="theme-color" content="#0f172a">
+
+  <!-- PWA & Mobile Web App Manifest -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Top Header Navigation -->
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="brand-icon">
+          <img src="icons/icon.svg" alt="SpendSense Logo" width="40" height="40">
+        </div>
+        <div>
+          <h1 class="brand-title">SpendSense</h1>
+          <p class="brand-subtitle">Understand Your Spending</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" class="icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
+          <svg id="themeIcon" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
+        </button>
+        <button type="button" class="icon-btn" id="settingsBtn" title="Settings" aria-label="Open Settings">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          <span>Settings</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- SECTION 1: BUDGET LIMITS OVERVIEW (FR-03 & Wireframe) -->
+    <section class="budget-cards-grid" aria-label="Budget Limits">
+      <!-- Monthly Budget Card -->
+      <div class="budget-card">
+        <div class="budget-card-top">
+          <span class="budget-card-title">This Month's Spending</span>
+          <span class="pct-badge" id="monthProgressPct">0%</span>
+        </div>
+        <div class="budget-spent-summary">
+          <span class="spent-big" id="monthSpentVal">$0.00</span>
+          <span class="budget-limit-sub">/ <span id="monthLimitVal">$1,500.00</span></span>
+        </div>
+        <div class="progress-bar-container" role="progressbar" aria-label="Monthly Budget Progress">
+          <div class="progress-bar-fill fill-ok" id="monthProgressFill" style="width: 0%;"></div>
+        </div>
+        <div id="monthAlertBanner" class="budget-alert-banner alert-ok hidden">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- Daily Budget Card -->
+      <div class="budget-card">
+        <div class="budget-card-top">
+          <span class="budget-card-title">Today's Spending</span>
+          <span class="pct-badge" id="dayProgressPct">0%</span>
+        </div>
+        <div class="budget-spent-summary">
+          <span class="spent-big" id="daySpentVal">$0.00</span>
+          <span class="budget-limit-sub">/ <span id="dayLimitVal">$50.00</span></span>
+        </div>
+        <div class="progress-bar-container" role="progressbar" aria-label="Daily Budget Progress">
+          <div class="progress-bar-fill fill-ok" id="dayProgressFill" style="width: 0%;"></div>
+        </div>
+        <div id="dayAlertBanner" class="budget-alert-banner alert-warning hidden">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: CATEGORY BREAKDOWN & ANALYTICS (FR-04 & Wireframe) -->
+    <section class="card" aria-label="Category Analytics">
+      <div class="card-header">
+        <span class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10h-10z"></path></svg>
+          Category Breakdown
+        </span>
+        <div class="tabs-container">
+          <button type="button" class="tab-period" data-period="today">Day</button>
+          <button type="button" class="tab-period" data-period="week">Week</button>
+          <button type="button" class="tab-period active" data-period="month">Month</button>
+          <button type="button" class="tab-period" data-period="all">All</button>
+        </div>
+      </div>
+
+      <!-- Empty State for Chart -->
+      <div id="chartEmptyState" class="empty-state hidden">
+        <div class="empty-state-icon">📊</div>
+        <div class="empty-state-title">No spending recorded for this period</div>
+        <div class="empty-state-desc">Log your first expense below to view visual breakdown.</div>
+      </div>
+
+      <!-- Doughnut Chart Container -->
+      <div id="doughnutChartWrapper">
+        <div class="chart-viewport">
+          <canvas id="categoryDoughnutChart"></canvas>
+        </div>
+        <!-- Dynamic Legend with % and Amounts -->
+        <div id="categoryLegendContainer" class="legend-grid"></div>
+      </div>
+
+      <!-- Daily Spending Trend Bar Chart -->
+      <div class="trend-viewport">
+        <div class="trend-title">Spending Pattern Trend</div>
+        <canvas id="spendingTrendChart"></canvas>
+      </div>
+    </section>
+
+    <!-- SECTION 3: QUICK EXPENSE INPUT (FR-01 & Wireframe) -->
+    <section class="card" aria-label="Quick Add Expense">
+      <div class="card-header">
+        <span class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          Quick Add Expense
+        </span>
+      </div>
+
+      <form id="expenseForm" autocomplete="off">
+        <!-- Amount Input -->
+        <div class="form-group">
+          <label class="form-label" for="expenseAmount">Amount</label>
+          <div class="amount-input-wrapper">
+            <span class="currency-symbol" id="currencyPrefix">$</span>
+            <input type="number" step="0.01" min="0.01" id="expenseAmount" class="large-amount-input" placeholder="0.00" inputmode="decimal" required autofocus>
+          </div>
+          <!-- Quick Amount Chips (+5, +10, etc.) -->
+          <div class="quick-amount-row" aria-label="Quick add amounts">
+            <button type="button" class="chip-quick-amount" data-amount="5">+5</button>
+            <button type="button" class="chip-quick-amount" data-amount="10">+10</button>
+            <button type="button" class="chip-quick-amount" data-amount="20">+20</button>
+            <button type="button" class="chip-quick-amount" data-amount="50">+50</button>
+            <button type="button" class="chip-quick-amount" data-amount="100">+100</button>
+          </div>
+        </div>
+
+        <!-- Category Picker Chips -->
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <div id="categoryChipsContainer" class="category-chips-grid">
+            <!-- Dynamically populated from Store categories -->
+          </div>
+          <!-- Fallback Hidden/Accessible Select -->
+          <select id="expenseCategory" class="hidden" aria-hidden="true"></select>
+        </div>
+
+        <!-- Note Input & Suggestions -->
+        <div class="form-group">
+          <label class="form-label" for="expenseNote">Note / Description</label>
+          <input type="text" id="expenseNote" class="input-control" placeholder="e.g. Coffee & Pastry, Metro ride, Groceries">
+          <div class="note-suggestions-row" aria-label="Quick note suggestions">
+            <button type="button" class="suggestion-pill">☕ Coffee</button>
+            <button type="button" class="suggestion-pill">🍔 Lunch</button>
+            <button type="button" class="suggestion-pill">🛒 Groceries</button>
+            <button type="button" class="suggestion-pill">🚗 Uber / Taxi</button>
+            <button type="button" class="suggestion-pill">⚡ Utilities</button>
+            <button type="button" class="suggestion-pill">🍿 Cinema</button>
+          </div>
+        </div>
+
+        <!-- Date Picker with Quick Pills -->
+        <div class="form-group">
+          <label class="form-label" for="expenseDate">Date</label>
+          <div class="date-row">
+            <input type="date" id="expenseDate" class="input-control" style="flex: 1;" required>
+            <div class="date-pills-group">
+              <button type="button" class="pill-quick-date active" data-offset="0">Today</button>
+              <button type="button" class="pill-quick-date" data-offset="-1">Yesterday</button>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="saveExpenseBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          SAVE EXPENSE
+        </button>
+      </form>
+    </section>
+
+    <!-- SECTION 4: RECENT TRANSACTIONS HISTORY (FR-05 & Wireframe) -->
+    <section class="card" aria-label="Recent Transactions">
+      <div class="card-header">
+        <span class="card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="12 8 12 12 14 14"></polyline><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path></svg>
+          Recent Transactions
+        </span>
+        <span class="count-badge" id="txCountBadge">0 entries</span>
+      </div>
+
+      <!-- Filters & Search -->
+      <div class="history-controls">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchTxInput" class="input-control search-input" placeholder="Search by note or category...">
+        </div>
+        <select id="filterCategorySelect" class="input-control history-filter-select">
+          <option value="all">All Categories</option>
+        </select>
+        <select id="filterPeriodSelect" class="input-control history-filter-select">
+          <option value="all">All Time</option>
+          <option value="today">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+        </select>
+      </div>
+
+      <!-- Empty History State -->
+      <div id="historyEmptyState" class="empty-state hidden">
+        <div class="empty-state-icon">📝</div>
+        <div class="empty-state-title">No transactions found</div>
+        <div class="empty-state-desc">Try adjusting your filters or record an expense above.</div>
+      </div>
+
+      <!-- Transaction List grouped chronologically -->
+      <div id="historyContainer"></div>
+    </section>
+  </div>
+
+  <!-- MODAL: SETTINGS & CUSTOM CATEGORIES (FR-03, FR-06, FR-07) -->
+  <div id="settingsModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="settingsModalTitle" class="modal-title">⚙️ App Settings & Backup</h2>
+        <button type="button" class="modal-close-btn" id="closeSettingsBtn" aria-label="Close Settings">✕</button>
+      </div>
+
+      <form id="settingsForm">
+        <!-- Budget & Currency Configuration -->
+        <div class="settings-subheading">Budget Ceilings & Currency</div>
+        <div class="form-group">
+          <label class="form-label" for="currencySelect">Preferred Currency</label>
+          <select id="currencySelect" class="input-control">
+            <option value="$">$ USD / CAD / AUD ($)</option>
+            <option value="€">€ Euro (€)</option>
+            <option value="£">£ British Pound (£)</option>
+            <option value="₹">₹ Indian Rupee (₹)</option>
+            <option value="¥">¥ Japanese Yen / Yuan (¥)</option>
+            <option value="₩">₩ Korean Won (₩)</option>
+            <option value="CHF">CHF Swiss Franc</option>
+            <option value="R$">R$ Brazilian Real</option>
+            <option value="kr">kr Nordic Krone</option>
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label" for="dailyBudgetInput">Daily Limit</label>
+            <input type="number" id="dailyBudgetInput" class="input-control" step="1" min="1" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="monthlyBudgetInput">Monthly Limit</label>
+            <input type="number" id="monthlyBudgetInput" class="input-control" step="1" min="1" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="themeSelect">Appearance</label>
+          <select id="themeSelect" class="input-control">
+            <option value="system">Auto / System Default</option>
+            <option value="light">Light Mode</option>
+            <option value="dark">Dark Mode</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 10px; margin-bottom: 20px;">
+          Save Budget Settings
+        </button>
+      </form>
+
+      <!-- Custom Categories Management (FR-07) -->
+      <div class="settings-section-divider"></div>
+      <div class="settings-subheading">Manage Categories</div>
+      <div id="categoryListContainer" class="category-mgmt-container">
+        <!-- Dynamically rendered categories -->
+      </div>
+
+      <!-- Add New Custom Category -->
+      <div class="add-cat-row" style="margin-top: 12px;">
+        <input type="text" id="newCatIconInput" class="input-control" placeholder="Emoji (e.g. 🎮)" style="width: 100px; text-align: center;">
+        <input type="text" id="newCatNameInput" class="input-control" placeholder="Category Name" style="flex: 1;">
+        <input type="color" id="newCatColorInput" class="color-picker-input" value="#3b82f6" title="Category Accent Color">
+        <button type="button" class="btn-secondary" id="addCategoryBtn">+ Add</button>
+      </div>
+
+      <!-- Data Backup, Export & Import (FR-06) -->
+      <div class="settings-section-divider"></div>
+      <div class="settings-subheading">Data Backup & Privacy</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+        SpendSense stores 100% of your records locally in your browser. Export anytime to keep secure off-device backups.
+      </p>
+
+      <div class="backup-buttons-grid">
+        <button type="button" class="btn-secondary" id="exportCsvBtn">
+          📄 Export CSV
+        </button>
+        <button type="button" class="btn-secondary" id="exportJsonBtn">
+          💾 Export JSON
+        </button>
+        <button type="button" class="btn-secondary" id="importTriggerBtn">
+          📥 Restore Backup
+        </button>
+        <button type="button" class="btn-secondary" id="loadSampleDataBtn" style="border-color: #3b82f6; color: #3b82f6;">
+          ✨ Demo Data
+        </button>
+      </div>
+      <input type="file" id="importFileInput" class="hidden" accept=".json,.csv">
+
+      <!-- Danger Zone -->
+      <div style="margin-top: 20px;">
+        <button type="button" class="btn-danger" id="clearAllDataBtn" style="width: 100%;">
+          🗑️ Clear All Expense Data
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDIT TRANSACTION (FR-05) -->
+  <div id="editTxModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="editTxModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="editTxModalTitle" class="modal-title">✏️ Edit Expense</h2>
+        <button type="button" class="modal-close-btn" id="closeEditModalBtn" aria-label="Close Edit Modal">✕</button>
+      </div>
+
+      <form id="editTxForm">
+        <input type="hidden" id="editTxId">
+
+        <div class="form-group">
+          <label class="form-label" for="editAmountInput">Amount</label>
+          <div class="amount-input-wrapper">
+            <span class="currency-symbol" id="editCurrencyPrefix">$</span>
+            <input type="number" step="0.01" min="0.01" id="editAmountInput" class="large-amount-input" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="editCategorySelect">Category</label>
+          <select id="editCategorySelect" class="input-control" required></select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="editNoteInput">Note</label>
+          <input type="text" id="editNoteInput" class="input-control" placeholder="Description">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="editDateInput">Date</label>
+          <input type="date" id="editDateInput" class="input-control" required>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button type="submit" class="btn-primary" style="flex: 1;">Save Changes</button>
+          <button type="button" class="btn-danger" id="deleteTxModalBtn">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/chart.umd.min.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/export-import.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

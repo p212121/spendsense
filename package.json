@@ -1,0 +1,20 @@
+{
+  "name": "spendsense",
+  "version": "1.0.0",
+  "description": "Lightweight, privacy-first mobile expense tracker with instant budget alerts and visual analytics.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/suite.js"
+  },
+  "keywords": [
+    "expense-tracker",
+    "personal-finance",
+    "privacy-first",
+    "pwa",
+    "budget",
+    "chartjs"
+  ],
+  "author": "",
+  "license": "MIT"
+}

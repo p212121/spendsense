@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="50%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background rounded squircle -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)" />
+
+  <!-- Subtle glow -->
+  <circle cx="256" cy="220" r="160" fill="#6366f1" opacity="0.15" />
+
+  <!-- Credit Card Main Shape -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="140" width="352" height="220" rx="24" fill="url(#cardGrad)" />
+    <!-- Magnetic stripe / top bar effect -->
+    <rect x="80" y="188" width="352" height="38" fill="#0f172a" opacity="0.25" />
+    <!-- Chip -->
+    <rect x="120" y="250" width="54" height="42" rx="8" fill="#fbbf24" opacity="0.9" />
+    <path d="M 120 271 H 174 M 147 250 V 292" stroke="#d97706" stroke-width="2" />
+    <!-- Pulse signal / contactless waves -->
+    <path d="M 195 258 A 14 14 0 0 1 195 284 M 205 252 A 22 22 0 0 1 205 290" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.75" />
+    <!-- Card bottom accents -->
+    <circle cx="370" cy="310" r="22" fill="#ef4444" opacity="0.8" />
+    <circle cx="395" cy="310" r="22" fill="#f59e0b" opacity="0.8" />
+  </g>
+
+  <!-- Trending badge / spark icon -->
+  <g filter="url(#shadow)">
+    <circle cx="380" cy="130" r="48" fill="url(#accentGrad)" />
+    <!-- Lightning bolt / check / trending up arrow -->
+    <path d="M 370 150 L 382 114 L 394 114 L 382 132 L 398 132 L 368 156 Z" fill="#ffffff" />
+  </g>
+
+  <!-- Bottom dot indicator -->
+  <rect x="216" y="440" width="80" height="6" rx="3" fill="#64748b" opacity="0.5" />
+</svg>
