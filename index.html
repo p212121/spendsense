@@ -1,253 +1,620 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <meta content="mobile_tab" name="shell-type"/>
   <title>SpendSense — Understand Your Spending</title>
-  <meta name="description" content="Lightweight, mobile-first, privacy-first personal finance tracker with zero server latency, instant expense logging, and budget alerts.">
-  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Lightweight, mobile-first, privacy-first personal finance tracker with zero server latency, instant expense logging, and budget alerts."/>
+  <meta name="theme-color" content="#faf8ff"/>
 
   <!-- PWA & Mobile Web App Manifest -->
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
-  <link rel="apple-touch-icon" href="icons/icon.svg">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg"/>
+  <link rel="apple-touch-icon" href="icons/icon.svg"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="css/styles.css">
+  <!-- Google Fonts & Material Symbols (Stitch Design System) -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+
+  <!-- Tailwind CSS Engine with Stitch Theme Tokens -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#005c55",
+            "primary-container": "#0f766e",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#a3faef",
+            "secondary": "#006a61",
+            "secondary-container": "#86f2e4",
+            "on-secondary-container": "#006f66",
+            "surface": "#faf8ff",
+            "on-surface": "#131b2e",
+            "on-surface-variant": "#3e4947",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f2f3ff",
+            "surface-container": "#eaedff",
+            "surface-container-high": "#e2e7ff",
+            "surface-container-highest": "#dae2fd",
+            "outline": "#6e7977",
+            "outline-variant": "#bdc9c6",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a"
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css"/>
 </head>
-<body>
+<body class="bg-surface text-on-surface antialiased flex flex-col min-h-screen">
 
-  <div class="app-container">
-    <!-- Top Header Navigation -->
-    <header class="app-header">
-      <div class="brand-wrapper">
-        <div class="brand-icon">
-          <img src="icons/icon.svg" alt="SpendSense Logo" width="40" height="40">
+  <!-- Top App Bar (Header) -->
+  <header class="fixed top-0 inset-x-0 z-40 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)] pt-safe">
+    <div class="h-16 px-4 max-w-lg mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-primary-container/10 flex items-center justify-center overflow-hidden p-1">
+          <img alt="SpendSense Logo" class="w-full h-full object-contain" src="icons/icon.svg"/>
         </div>
-        <div>
-          <h1 class="brand-title">SpendSense</h1>
-          <p class="brand-subtitle">Understand Your Spending</p>
+        <div class="flex flex-col">
+          <span class="font-bold text-base text-on-surface tracking-tight leading-tight">SpendSense</span>
+          <span class="text-[11px] text-on-surface-variant leading-none" id="headerSubtitle">Dashboard</span>
         </div>
-      </div>
-
-      <div class="header-actions">
-        <button type="button" class="icon-btn" id="themeToggleBtn" title="Toggle Theme" aria-label="Toggle Theme">
-          <svg id="themeIcon" width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-          </svg>
-        </button>
-        <button type="button" class="icon-btn" id="settingsBtn" title="Settings" aria-label="Open Settings">
-          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-          </svg>
-          <span>Settings</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- SECTION 1: BUDGET LIMITS OVERVIEW (FR-03 & Wireframe) -->
-    <section class="budget-cards-grid" aria-label="Budget Limits">
-      <!-- Monthly Budget Card -->
-      <div class="budget-card">
-        <div class="budget-card-top">
-          <span class="budget-card-title">This Month's Spending</span>
-          <span class="pct-badge" id="monthProgressPct">0%</span>
-        </div>
-        <div class="budget-spent-summary">
-          <span class="spent-big" id="monthSpentVal">$0.00</span>
-          <span class="budget-limit-sub">/ <span id="monthLimitVal">$1,500.00</span></span>
-        </div>
-        <div class="progress-bar-container" role="progressbar" aria-label="Monthly Budget Progress">
-          <div class="progress-bar-fill fill-ok" id="monthProgressFill" style="width: 0%;"></div>
-        </div>
-        <div id="monthAlertBanner" class="budget-alert-banner alert-ok hidden">
-          <!-- Populated dynamically via JS -->
-        </div>
-      </div>
-
-      <!-- Daily Budget Card -->
-      <div class="budget-card">
-        <div class="budget-card-top">
-          <span class="budget-card-title">Today's Spending</span>
-          <span class="pct-badge" id="dayProgressPct">0%</span>
-        </div>
-        <div class="budget-spent-summary">
-          <span class="spent-big" id="daySpentVal">$0.00</span>
-          <span class="budget-limit-sub">/ <span id="dayLimitVal">$50.00</span></span>
-        </div>
-        <div class="progress-bar-container" role="progressbar" aria-label="Daily Budget Progress">
-          <div class="progress-bar-fill fill-ok" id="dayProgressFill" style="width: 0%;"></div>
-        </div>
-        <div id="dayAlertBanner" class="budget-alert-banner alert-warning hidden">
-          <!-- Populated dynamically via JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 2: CATEGORY BREAKDOWN & ANALYTICS (FR-04 & Wireframe) -->
-    <section class="card" aria-label="Category Analytics">
-      <div class="card-header">
-        <span class="card-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10h-10z"></path></svg>
-          Category Breakdown
-        </span>
-        <div class="tabs-container">
-          <button type="button" class="tab-period" data-period="today">Day</button>
-          <button type="button" class="tab-period" data-period="week">Week</button>
-          <button type="button" class="tab-period active" data-period="month">Month</button>
-          <button type="button" class="tab-period" data-period="all">All</button>
-        </div>
-      </div>
-
-      <!-- Empty State for Chart -->
-      <div id="chartEmptyState" class="empty-state hidden">
-        <div class="empty-state-icon">📊</div>
-        <div class="empty-state-title">No spending recorded for this period</div>
-        <div class="empty-state-desc">Log your first expense below to view visual breakdown.</div>
-      </div>
-
-      <!-- Doughnut Chart Container -->
-      <div id="doughnutChartWrapper">
-        <div class="chart-viewport">
-          <canvas id="categoryDoughnutChart"></canvas>
-        </div>
-        <!-- Dynamic Legend with % and Amounts -->
-        <div id="categoryLegendContainer" class="legend-grid"></div>
-      </div>
-
-      <!-- Daily Spending Trend Bar Chart -->
-      <div class="trend-viewport">
-        <div class="trend-title">Spending Pattern Trend</div>
-        <canvas id="spendingTrendChart"></canvas>
-      </div>
-    </section>
-
-    <!-- SECTION 3: QUICK EXPENSE INPUT (FR-01 & Wireframe) -->
-    <section class="card" aria-label="Quick Add Expense">
-      <div class="card-header">
-        <span class="card-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-          Quick Add Expense
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container text-[11px] font-semibold">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>100% Local
         </span>
       </div>
 
-      <form id="expenseForm" autocomplete="off">
-        <!-- Amount Input -->
-        <div class="form-group">
-          <label class="form-label" for="expenseAmount">Amount</label>
-          <div class="amount-input-wrapper">
-            <span class="currency-symbol" id="currencyPrefix">$</span>
-            <input type="number" step="0.01" min="0.01" id="expenseAmount" class="large-amount-input" placeholder="0.00" inputmode="decimal" required autofocus>
+      <div class="flex items-center gap-1.5">
+        <!-- Theme Toggle -->
+        <button type="button" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container active:scale-95 transition-all text-on-surface-variant hover:text-on-surface" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">
+          <span class="material-symbols-outlined text-xl" id="themeIcon">dark_mode</span>
+        </button>
+
+        <!-- Settings Modal Trigger -->
+        <button type="button" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container active:scale-95 transition-all text-on-surface-variant hover:text-on-surface" id="settingsBtn" aria-label="Settings" title="App Settings & Budgets">
+          <span class="material-symbols-outlined text-2xl">tune</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN SCROLLABLE CONTENT VIEW CONTAINER -->
+  <main class="flex flex-col relative w-full max-w-lg mx-auto px-4 pt-20 pb-safe min-h-screen">
+
+    <!-- =========================================================================
+         SCREEN 1: DASHBOARD
+         ========================================================================= -->
+    <div id="view-dashboard" class="app-view flex flex-col gap-4 pb-6">
+      <!-- Greeting & Security Pill -->
+      <div class="flex flex-col gap-1 pt-1">
+        <div class="flex items-center justify-between">
+          <h1 class="text-xl font-bold text-on-surface tracking-tight">Financial Overview</h1>
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-[11px] font-semibold">
+            <span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">shield</span>
+            Zero Cloud
+          </span>
+        </div>
+        <div class="inline-flex items-center gap-1.5 self-start px-2.5 py-1 rounded-full bg-secondary-container/30 text-on-secondary-container text-xs font-medium">
+          <span class="material-symbols-outlined text-[15px] text-secondary">lock</span>
+          <span>100% On-Device Storage (Zero Cloud Sync)</span>
+        </div>
+      </div>
+
+      <!-- Monthly Budget Progress Card (PRD Section 6 Wireframe) -->
+      <section class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 border border-surface-container/50">
+        <div class="flex items-center justify-between">
+          <span class="text-xs uppercase tracking-wider text-on-surface-variant font-bold">This Month's Spending</span>
+          <span class="text-xs text-on-surface-variant font-medium" id="dashMonthLabel">October 2026</span>
+        </div>
+
+        <!-- Spending Numbers & Ratio -->
+        <div class="flex items-baseline justify-between flex-wrap gap-1">
+          <div class="flex items-baseline gap-1.5">
+            <span class="text-3xl font-extrabold text-on-surface tracking-tight" id="dashMonthSpent">$0.00</span>
+            <span class="text-lg text-outline font-normal">/ <span id="dashMonthLimit">$1,500</span></span>
           </div>
-          <!-- Quick Amount Chips (+5, +10, etc.) -->
-          <div class="quick-amount-row" aria-label="Quick add amounts">
-            <button type="button" class="chip-quick-amount" data-amount="5">+5</button>
-            <button type="button" class="chip-quick-amount" data-amount="10">+10</button>
-            <button type="button" class="chip-quick-amount" data-amount="20">+20</button>
-            <button type="button" class="chip-quick-amount" data-amount="50">+50</button>
-            <button type="button" class="chip-quick-amount" data-amount="100">+100</button>
+          <div class="px-2.5 py-1 rounded-full text-xs font-bold" id="dashMonthPctBadge">0%</div>
+        </div>
+
+        <!-- Progress Meter -->
+        <div class="w-full flex flex-col gap-1.5">
+          <div class="w-full h-3 bg-surface-container rounded-full overflow-hidden p-0.5">
+            <div class="h-full rounded-full transition-all duration-700 ease-out shadow-sm" id="dashMonthProgressBar" style="width: 0%;"></div>
+          </div>
+          <div class="flex justify-between items-center text-[11px] text-on-surface-variant">
+            <span>$0</span>
+            <span>Target: <span id="dashMonthTargetSub">$1,500</span></span>
           </div>
         </div>
 
-        <!-- Category Picker Chips -->
-        <div class="form-group">
-          <label class="form-label">Category</label>
-          <div id="categoryChipsContainer" class="category-chips-grid">
-            <!-- Dynamically populated from Store categories -->
-          </div>
-          <!-- Fallback Hidden/Accessible Select -->
-          <select id="expenseCategory" class="hidden" aria-hidden="true"></select>
+        <!-- Warning / Status Callout Badge -->
+        <div class="flex items-center gap-2.5 p-3 rounded-xl text-xs transition-all" id="dashMonthAlertCallout">
+          <span class="material-symbols-outlined text-lg shrink-0" id="dashMonthAlertIcon" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          <p class="leading-snug" id="dashMonthAlertText">
+            <strong class="font-semibold">On Track:</strong> Healthy budget pace.
+          </p>
         </div>
 
-        <!-- Note Input & Suggestions -->
-        <div class="form-group">
-          <label class="form-label" for="expenseNote">Note / Description</label>
-          <input type="text" id="expenseNote" class="input-control" placeholder="e.g. Coffee & Pastry, Metro ride, Groceries">
-          <div class="note-suggestions-row" aria-label="Quick note suggestions">
-            <button type="button" class="suggestion-pill">☕ Coffee</button>
-            <button type="button" class="suggestion-pill">🍔 Lunch</button>
-            <button type="button" class="suggestion-pill">🛒 Groceries</button>
-            <button type="button" class="suggestion-pill">🚗 Uber / Taxi</button>
-            <button type="button" class="suggestion-pill">⚡ Utilities</button>
-            <button type="button" class="suggestion-pill">🍿 Cinema</button>
+        <!-- Daily Spending Gauge -->
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-base">calendar_today</span>
+            <span class="text-xs text-on-surface-variant">Today: <strong class="text-on-surface font-semibold" id="dashTodaySpent">$0.00</strong> / <span id="dashTodayLimit">$50</span> target</span>
+          </div>
+          <span class="text-[11px] text-primary font-bold bg-surface-container-lowest px-2.5 py-0.5 rounded-full shadow-sm" id="dashTodayPaceBadge">
+            0% daily pace
+          </span>
+        </div>
+      </section>
+
+      <!-- Quick Add Expense CTA -->
+      <button type="button" class="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary py-3.5 px-5 rounded-2xl shadow-sm hover:opacity-95 active:scale-[0.98] transition-all min-h-[48px] text-sm font-bold tracking-wide" id="dashQuickAddBtn">
+        <span class="material-symbols-outlined text-xl font-bold">add</span>
+        <span>+ Quick Add Expense</span>
+      </button>
+
+      <!-- Category Breakdown Card (PRD FR-04) -->
+      <section class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 border border-surface-container/50">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base font-bold text-on-surface">Category Breakdown</h2>
+          <div class="inline-flex rounded-xl bg-surface-container p-0.5" role="tablist">
+            <button type="button" class="px-2.5 py-1 rounded-lg bg-surface-container-lowest text-primary text-xs font-semibold shadow-sm transition-all period-toggle-btn" data-period="month">
+              This Month
+            </button>
+            <button type="button" class="px-2.5 py-1 rounded-lg text-on-surface-variant text-xs font-medium hover:text-on-surface transition-all period-toggle-btn" data-period="week">
+              This Week
+            </button>
           </div>
         </div>
 
-        <!-- Date Picker with Quick Pills -->
-        <div class="form-group">
-          <label class="form-label" for="expenseDate">Date</label>
-          <div class="date-row">
-            <input type="date" id="expenseDate" class="input-control" style="flex: 1;" required>
-            <div class="date-pills-group">
-              <button type="button" class="pill-quick-date active" data-offset="0">Today</button>
-              <button type="button" class="pill-quick-date" data-offset="-1">Yesterday</button>
+        <!-- Doughnut Chart Canvas -->
+        <div class="flex flex-col items-center gap-3 py-1">
+          <div class="relative w-44 h-44 flex items-center justify-center my-1" id="dashDoughnutContainer">
+            <canvas id="categoryDoughnutChart" width="176" height="176"></canvas>
+          </div>
+
+          <!-- Empty Chart State -->
+          <div id="chartEmptyState" class="hidden text-center py-6 text-on-surface-variant">
+            <span class="material-symbols-outlined text-4xl mb-1 text-outline">pie_chart</span>
+            <p class="text-sm font-semibold text-on-surface">No expenses recorded</p>
+            <p class="text-xs">Log your first expense to view category distribution.</p>
+          </div>
+
+          <!-- Category Legend Grid -->
+          <div class="grid grid-cols-2 gap-2 w-full pt-1" id="dashCategoryLegend">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent Transactions List (PRD FR-05) -->
+      <section class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-2 border border-surface-container/50">
+        <div class="flex items-center justify-between pb-1">
+          <h2 class="text-base font-bold text-on-surface">Recent Transactions</h2>
+          <button type="button" class="text-xs text-primary font-semibold hover:underline flex items-center gap-0.5" id="dashViewAllBtn">
+            View all
+            <span class="material-symbols-outlined text-sm">chevron_right</span>
+          </button>
+        </div>
+
+        <div class="flex flex-col gap-1.5" id="dashRecentTxList">
+          <!-- Dynamically populated -->
+        </div>
+      </section>
+    </div>
+
+    <!-- =========================================================================
+         SCREEN 2: QUICK ADD EXPENSE (<3s Frictionless Entry)
+         ========================================================================= -->
+    <div id="view-add" class="app-view hidden flex flex-col gap-4 pb-6 select-none">
+      <!-- Top Context & Mode Pill -->
+      <div class="flex items-center justify-between pt-1">
+        <div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full shadow-sm">
+          <span class="material-symbols-outlined text-primary text-base" style="font-variation-settings: 'FILL' 1;">schedule</span>
+          <span class="text-xs text-on-surface-variant font-medium" id="addContextDate">Today</span>
+        </div>
+        <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/40 text-on-secondary-container">
+          <span class="material-symbols-outlined text-sm font-semibold">bolt</span>
+          <span class="text-[11px] uppercase font-bold tracking-tight">Instant Local</span>
+        </div>
+      </div>
+
+      <!-- Hero Currency Display -->
+      <div class="bg-surface-container-lowest rounded-2xl p-5 shadow-sm flex flex-col items-center justify-center relative border border-surface-container/50">
+        <div class="flex items-center justify-between w-full mb-1">
+          <span class="text-[11px] uppercase text-outline tracking-wider font-semibold">Amount to log</span>
+          <button type="button" class="text-xs text-primary font-semibold py-1 px-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors" id="keypadClearBtn">
+            Clear
+          </button>
+        </div>
+
+        <!-- Live Display & Cursor -->
+        <div class="flex items-baseline justify-center gap-1.5 py-2 w-full">
+          <span class="text-3xl text-outline font-bold select-none" id="heroCurrencySymbol">$</span>
+          <div class="flex items-center">
+            <span class="text-4xl font-extrabold text-on-surface tracking-tight" id="heroAmountText">0.00</span>
+            <span class="inline-block w-0.5 h-8 bg-primary ml-1 rounded-full animate-pulse" id="cursorCaret"></span>
+          </div>
+        </div>
+
+        <!-- Subtle Budget Feedback Pill -->
+        <div class="flex items-center gap-1.5 px-3 py-1 mt-1 rounded-full bg-surface-container text-on-surface-variant text-xs" id="addBudgetFeedback">
+          <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          <span id="addBudgetFeedbackText">Ready to log expense</span>
+        </div>
+      </div>
+
+      <!-- Category Selector Carousel -->
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center justify-between px-1">
+          <span class="text-xs text-on-surface font-bold uppercase tracking-wider">Category</span>
+          <span class="text-[11px] text-outline">Tap to switch</span>
+        </div>
+        <div class="flex gap-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4" id="addCategoryPills">
+          <!-- Dynamically populated from Store -->
+        </div>
+      </div>
+
+      <!-- Quick Note & Date Selection Row -->
+      <div class="grid grid-cols-12 gap-2">
+        <!-- Note Input -->
+        <div class="col-span-8 bg-surface-container-lowest rounded-xl p-2 px-3.5 shadow-sm flex items-center gap-2 border border-surface-container/50">
+          <span class="material-symbols-outlined text-outline text-lg">edit_note</span>
+          <input type="text" id="addExpenseNote" class="w-full bg-transparent text-sm text-on-surface placeholder:text-outline focus:outline-none" placeholder="What was this for? (e.g. Coffee)"/>
+        </div>
+
+        <!-- Quick Date Toggle Button -->
+        <button type="button" class="col-span-4 bg-surface-container-lowest rounded-xl p-2 px-3 shadow-sm flex items-center justify-center gap-1.5 transition-transform active:scale-95 border border-surface-container/50" id="addDateToggleBtn">
+          <span class="material-symbols-outlined text-primary text-base">calendar_today</span>
+          <span class="text-xs text-on-surface font-bold" id="addDateLabel">Today</span>
+        </button>
+      </div>
+
+      <!-- Ergonomic Numeric Keypad (3x4 Layout with >48px Targets) -->
+      <div class="bg-surface-container-lowest rounded-2xl p-3 shadow-sm border border-surface-container/50">
+        <div class="grid grid-cols-3 gap-2 text-center" id="numericKeypad">
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val="1">1</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val="2">2</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val="3">3</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val="4">4</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val="5">5</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val="6">6</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val="7">7</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val="8">8</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val="9">9</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val=".">.</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-low hover:bg-surface-container font-bold text-xl text-on-surface flex items-center justify-center" data-val="0">0</button>
+          <button type="button" class="key-btn h-13 min-h-[52px] rounded-xl bg-surface-container-high hover:bg-surface-container flex items-center justify-center text-on-surface" data-action="backspace">
+            <span class="material-symbols-outlined text-2xl">backspace</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Save Expense Button (<3s CTA) -->
+      <button type="button" class="w-full min-h-[52px] bg-primary-container text-on-primary-container rounded-2xl shadow-md flex items-center justify-center gap-2 text-sm font-bold tracking-wider uppercase transition-all active:scale-[0.98]" id="saveExpenseBtn">
+        <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+        <span>Save Expense (&lt;3s)</span>
+        <span class="material-symbols-outlined text-lg opacity-80">check</span>
+      </button>
+    </div>
+
+    <!-- =========================================================================
+         SCREEN 3: ANALYTICS & BUDGET GUARDRAILS
+         ========================================================================= -->
+    <div id="view-analytics" class="app-view hidden flex flex-col gap-4 pb-6">
+      <div class="flex flex-col gap-2 pt-1">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-xl font-bold text-on-surface tracking-tight">Spending Analytics</h1>
+            <p class="text-xs text-on-surface-variant">Calm insights from purely on-device records</p>
+          </div>
+          <button type="button" class="w-11 h-11 rounded-xl bg-surface-container flex items-center justify-center text-primary active:scale-95 transition-transform shadow-sm" id="analyticsEditBudgetBtn" title="Adjust Budget Caps">
+            <span class="material-symbols-outlined text-2xl">tune</span>
+          </button>
+        </div>
+
+        <!-- Segmented Time Filter -->
+        <div class="flex p-1 bg-surface-container rounded-xl w-full" role="tablist">
+          <button type="button" class="analytics-tab flex-1 h-9 rounded-lg text-xs font-semibold transition-all text-on-surface-variant hover:text-on-surface" data-range="today">Daily</button>
+          <button type="button" class="analytics-tab flex-1 h-9 rounded-lg text-xs font-semibold transition-all text-on-surface-variant hover:text-on-surface" data-range="week">Weekly</button>
+          <button type="button" class="analytics-tab flex-1 h-9 rounded-lg text-xs font-semibold bg-surface-container-lowest text-primary shadow-sm" data-range="month">Monthly</button>
+          <button type="button" class="analytics-tab flex-1 h-9 rounded-lg text-xs font-semibold transition-all text-on-surface-variant hover:text-on-surface" data-range="all">All</button>
+        </div>
+      </div>
+
+      <!-- Hero Overview Summary -->
+      <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 border border-surface-container/50">
+        <div class="flex items-center justify-between">
+          <span class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold">Total Period Spent</span>
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container text-xs font-semibold">
+            <span class="material-symbols-outlined text-sm leading-none">insights</span>
+            Verified
+          </span>
+        </div>
+        <div class="flex items-baseline justify-between">
+          <div class="flex flex-col">
+            <span class="text-3xl font-extrabold text-on-surface tracking-tight" id="analyticsHeroTotal">$0.00</span>
+            <span class="text-[11px] text-on-surface-variant" id="analyticsHeroSub">Across logged transactions</span>
+          </div>
+          <div class="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-xl">analytics</span>
+          </div>
+        </div>
+
+        <!-- Split Stats Grid -->
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <div class="bg-surface-container-low rounded-xl p-3 flex flex-col">
+            <span class="text-[11px] text-on-surface-variant">Daily Average</span>
+            <span class="text-base font-bold text-on-surface mt-0.5" id="analyticsDailyAvg">$0.00</span>
+            <span class="text-[10px] text-on-surface-variant mt-0.5" id="analyticsDailyAvgSub">vs $50 target</span>
+          </div>
+          <div class="bg-surface-container-low rounded-xl p-3 flex flex-col">
+            <span class="text-[11px] text-on-surface-variant">Projected Month-End</span>
+            <span class="text-base font-bold text-secondary mt-0.5" id="analyticsProjectedEnd">$0.00</span>
+            <span class="text-[10px] text-primary font-semibold mt-0.5" id="analyticsProjectedSub">Under Limit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget Guardrails (FR-03) -->
+      <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 border border-surface-container/50">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-secondary-container/40 flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined text-lg">shield</span>
+            </div>
+            <h2 class="text-sm font-bold text-on-surface">Budget Guardrails</h2>
+          </div>
+          <button type="button" class="text-xs text-primary font-semibold px-2 py-1 rounded-lg hover:bg-surface-container transition-colors" id="analyticsQuickEditBtn">
+            Edit Limits
+          </button>
+        </div>
+
+        <!-- Monthly Limit Card -->
+        <div class="bg-surface-container-low rounded-xl p-3 flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="text-xs font-semibold text-on-surface">Monthly Spending Ceiling</span>
+              <span class="text-[11px] text-on-surface-variant" id="guardrailMonthSub">$0 used of $1,500</span>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold" id="guardrailMonthBadge">0%</span>
+          </div>
+          <div class="w-full bg-surface-container-highest h-2.5 rounded-full overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-500" id="guardrailMonthBar" style="width: 0%;"></div>
+          </div>
+          <div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+            <span id="guardrailMonthRemaining">$1,500 left</span>
+            <span class="font-semibold" id="guardrailMonthStatus">Healthy</span>
+          </div>
+        </div>
+
+        <!-- Daily Limit Card -->
+        <div class="bg-surface-container-low rounded-xl p-3 flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="text-xs font-semibold text-on-surface">Today's Daily Target</span>
+              <span class="text-[11px] text-on-surface-variant" id="guardrailDaySub">$0 used of $50</span>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold" id="guardrailDayBadge">0%</span>
+          </div>
+          <div class="w-full bg-surface-container-highest h-2.5 rounded-full overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-500" id="guardrailDayBar" style="width: 0%;"></div>
+          </div>
+          <div class="flex items-center justify-between text-[11px] text-on-surface-variant">
+            <span id="guardrailDayRemaining">$50 buffer</span>
+            <span class="font-semibold" id="guardrailDayStatus">Paced Well</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spending Trend Timeline (FR-04) -->
+      <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 border border-surface-container/50">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-bold text-on-surface">Spending Timeline Trend</h2>
+            <p class="text-[11px] text-on-surface-variant">Daily spending variation</p>
+          </div>
+        </div>
+        <div class="w-full h-44 relative">
+          <canvas id="spendingTrendChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         SCREEN 4: TRANSACTION HISTORY & LOCAL VAULT (FR-05, FR-06)
+         ========================================================================= -->
+    <div id="view-history" class="app-view hidden flex flex-col gap-4 pb-6">
+      <!-- Privacy Vault Active Banner -->
+      <div class="flex items-center justify-between bg-surface-container-low px-4 py-3 rounded-2xl shadow-sm border border-surface-container/50">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-secondary-container/40 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-[18px]">shield_lock</span>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-on-surface">Offline Vault Active</p>
+            <p class="text-[11px] text-on-surface-variant">Zero cloud sync • AES Local storage</p>
+          </div>
+        </div>
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-secondary-container/30 text-primary text-[10px] font-bold">
+          Encrypted
+        </span>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="flex flex-col gap-2.5">
+        <div class="flex items-center gap-2">
+          <div class="relative flex-1">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px] pointer-events-none">search</span>
+            <input class="w-full h-11 pl-10 pr-9 rounded-xl bg-surface-container-lowest text-on-surface text-sm placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary shadow-sm border border-surface-container/50" id="historySearchInput" placeholder="Search note or category..." type="text"/>
+            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface hidden" id="historyClearSearchBtn">
+              <span class="material-symbols-outlined text-[18px]">close</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Pills Carousel -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5" id="historyFilterPills">
+          <button class="filter-pill shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-primary text-on-primary shadow-sm" data-filter="all">
+            All (<span id="historyTotalCount">0</span>)
+          </button>
+          <!-- Dynamic category pills -->
+        </div>
+      </div>
+
+      <!-- Chronologically Grouped Transactions Container -->
+      <div class="flex flex-col gap-4 mb-2" id="historyListContainer">
+        <!-- Dynamically rendered -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="hidden flex-col items-center justify-center py-10 px-4 text-center bg-surface-container-lowest rounded-2xl shadow-sm border border-surface-container/50" id="historyEmptyState">
+        <div class="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant mb-3">
+          <span class="material-symbols-outlined text-[28px]">search_off</span>
+        </div>
+        <p class="text-sm font-bold text-on-surface mb-1">No matching transactions</p>
+        <p class="text-xs text-on-surface-variant mb-4">Try clearing your filters or record an expense above.</p>
+        <button class="px-4 py-2 bg-primary text-on-primary rounded-xl text-xs font-bold" id="historyResetSearchBtn">
+          Reset Search
+        </button>
+      </div>
+
+      <!-- Local Vault & Backup Card (FR-02, FR-06) -->
+      <div class="bg-surface-container-lowest rounded-2xl p-4 shadow-sm flex flex-col gap-3 border border-surface-container/50">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]">lock_reset</span>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-on-surface">Local Vault &amp; Backup</h3>
+              <p class="text-[11px] text-on-surface-variant">Privacy Engine FR-02 / FR-06</p>
             </div>
           </div>
+          <span class="px-2 py-0.5 rounded-md bg-secondary-container/40 text-on-secondary-container text-[11px] font-semibold">
+            Isolated
+          </span>
         </div>
 
-        <button type="submit" class="btn-primary" id="saveExpenseBtn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-          SAVE EXPENSE
+        <div class="bg-surface-container-low p-3 rounded-xl flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">verified_user</span>
+          <p class="text-xs text-on-surface leading-relaxed">
+            <strong class="font-semibold text-primary" id="vaultTxCount">0 transactions</strong> stored in browser <code class="font-mono bg-surface px-1 py-0.5 rounded text-[10px]">localStorage</code>. Exactly <strong class="font-semibold text-primary">0 bytes</strong> sent to any external server.
+          </p>
+        </div>
+
+        <!-- Vault Action Buttons -->
+        <div class="flex flex-col gap-2">
+          <!-- Export -->
+          <button type="button" class="w-full h-11 px-4 rounded-xl bg-primary text-on-primary text-xs font-bold flex items-center justify-between active:scale-[0.99] transition-transform shadow-sm" id="vaultExportBtn">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">download</span>
+              <span>Export Backup (CSV / JSON)</span>
+            </div>
+            <span class="material-symbols-outlined text-[16px] text-on-primary/70">chevron_right</span>
+          </button>
+
+          <!-- Import / Restore -->
+          <label class="w-full h-11 px-4 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-bold flex items-center justify-between cursor-pointer active:scale-[0.99] transition-all shadow-sm">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-secondary">upload_file</span>
+              <span>Restore / Import File</span>
+            </div>
+            <input accept=".json,.csv" class="hidden" id="vaultImportFileInput" type="file"/>
+            <span class="material-symbols-outlined text-[16px] text-on-surface-variant">folder_open</span>
+          </label>
+
+          <!-- Demo Data -->
+          <button type="button" class="w-full h-11 px-4 rounded-xl bg-secondary-container/30 text-on-secondary-container text-xs font-bold flex items-center justify-between active:scale-[0.99] transition-all" id="vaultDemoDataBtn">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-primary">auto_awesome</span>
+              <span>Load Realistic Demo Data</span>
+            </div>
+            <span class="material-symbols-outlined text-[16px] text-primary">sparkles</span>
+          </button>
+
+          <!-- Clear All Data (Destructive) -->
+          <button type="button" class="w-full h-11 px-4 rounded-xl bg-error-container/40 hover:bg-error-container text-on-error-container text-xs font-bold flex items-center justify-between active:scale-[0.99] transition-all" id="vaultClearBtn">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-error">delete_forever</span>
+              <span class="text-error font-bold">Clear All Data (Reset)</span>
+            </div>
+            <span class="material-symbols-outlined text-[16px] text-error/70">warning</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       FIXED BOTTOM APP NAVIGATION BAR (Stitch Design Specification)
+       ========================================================================= -->
+  <nav class="fixed bottom-0 inset-x-0 z-40 bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.04)] pb-safe border-t border-surface-container/50">
+    <div class="max-w-lg mx-auto flex justify-around items-center h-16 px-2">
+      <!-- 1. Dashboard -->
+      <button type="button" class="nav-tab active flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-on-surface-variant transition-colors" data-tab="dashboard">
+        <span class="material-symbols-outlined text-2xl tab-icon">home</span>
+        <span class="text-[11px] font-semibold">Dashboard</span>
+      </button>
+
+      <!-- 2. Add Transaction (Elevated Floating Action Button) -->
+      <button type="button" class="nav-tab flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-on-surface-variant transition-colors" data-tab="add">
+        <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-md active:scale-95 transition-transform">
+          <span class="material-symbols-outlined text-2xl leading-none">add</span>
+        </div>
+        <span class="text-[11px] font-semibold">Add</span>
+      </button>
+
+      <!-- 3. Analytics -->
+      <button type="button" class="nav-tab flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-on-surface-variant transition-colors" data-tab="analytics">
+        <span class="material-symbols-outlined text-2xl tab-icon">pie_chart</span>
+        <span class="text-[11px] font-semibold">Analytics</span>
+      </button>
+
+      <!-- 4. History -->
+      <button type="button" class="nav-tab flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-on-surface-variant transition-colors" data-tab="history">
+        <span class="material-symbols-outlined text-2xl tab-icon">receipt_long</span>
+        <span class="text-[11px] font-semibold">History</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- =========================================================================
+       MODALS: SETTINGS, BUDGET ADJUSTMENTS, & EDIT TRANSACTION
+       ========================================================================= -->
+
+  <!-- Modal: Settings & Budget Caps -->
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal-dialog p-5 flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-2 border-b border-surface-container">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">tune</span>
+          <h2 class="text-base font-bold text-on-surface">Budget Caps &amp; Settings</h2>
+        </div>
+        <button type="button" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container" id="closeSettingsModalBtn">
+          <span class="material-symbols-outlined text-lg">close</span>
         </button>
-      </form>
-    </section>
-
-    <!-- SECTION 4: RECENT TRANSACTIONS HISTORY (FR-05 & Wireframe) -->
-    <section class="card" aria-label="Recent Transactions">
-      <div class="card-header">
-        <span class="card-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="12 8 12 12 14 14"></polyline><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path></svg>
-          Recent Transactions
-        </span>
-        <span class="count-badge" id="txCountBadge">0 entries</span>
       </div>
 
-      <!-- Filters & Search -->
-      <div class="history-controls">
-        <div class="search-input-wrapper">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="searchTxInput" class="input-control search-input" placeholder="Search by note or category...">
-        </div>
-        <select id="filterCategorySelect" class="input-control history-filter-select">
-          <option value="all">All Categories</option>
-        </select>
-        <select id="filterPeriodSelect" class="input-control history-filter-select">
-          <option value="all">All Time</option>
-          <option value="today">Today</option>
-          <option value="week">This Week</option>
-          <option value="month">This Month</option>
-        </select>
-      </div>
-
-      <!-- Empty History State -->
-      <div id="historyEmptyState" class="empty-state hidden">
-        <div class="empty-state-icon">📝</div>
-        <div class="empty-state-title">No transactions found</div>
-        <div class="empty-state-desc">Try adjusting your filters or record an expense above.</div>
-      </div>
-
-      <!-- Transaction List grouped chronologically -->
-      <div id="historyContainer"></div>
-    </section>
-  </div>
-
-  <!-- MODAL: SETTINGS & CUSTOM CATEGORIES (FR-03, FR-06, FR-07) -->
-  <div id="settingsModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h2 id="settingsModalTitle" class="modal-title">⚙️ App Settings & Backup</h2>
-        <button type="button" class="modal-close-btn" id="closeSettingsBtn" aria-label="Close Settings">✕</button>
-      </div>
-
-      <form id="settingsForm">
-        <!-- Budget & Currency Configuration -->
-        <div class="settings-subheading">Budget Ceilings & Currency</div>
-        <div class="form-group">
-          <label class="form-label" for="currencySelect">Preferred Currency</label>
-          <select id="currencySelect" class="input-control">
+      <form id="settingsForm" class="flex flex-col gap-3">
+        <div>
+          <label class="block text-xs uppercase font-bold text-on-surface-variant mb-1" for="modalCurrencySelect">Currency</label>
+          <select id="modalCurrencySelect" class="w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border border-surface-container focus:outline-none focus:ring-2 focus:ring-primary">
             <option value="$">$ USD / CAD / AUD ($)</option>
             <option value="€">€ Euro (€)</option>
             <option value="£">£ British Pound (£)</option>
@@ -256,126 +623,107 @@
             <option value="₩">₩ Korean Won (₩)</option>
             <option value="CHF">CHF Swiss Franc</option>
             <option value="R$">R$ Brazilian Real</option>
-            <option value="kr">kr Nordic Krone</option>
           </select>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group">
-            <label class="form-label" for="dailyBudgetInput">Daily Limit</label>
-            <input type="number" id="dailyBudgetInput" class="input-control" step="1" min="1" required>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs uppercase font-bold text-on-surface-variant mb-1" for="modalDailyBudget">Daily Limit</label>
+            <input type="number" step="1" min="1" id="modalDailyBudget" class="w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border border-surface-container focus:outline-none focus:ring-2 focus:ring-primary" required/>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="monthlyBudgetInput">Monthly Limit</label>
-            <input type="number" id="monthlyBudgetInput" class="input-control" step="1" min="1" required>
+          <div>
+            <label class="block text-xs uppercase font-bold text-on-surface-variant mb-1" for="modalMonthlyBudget">Monthly Limit</label>
+            <input type="number" step="1" min="1" id="modalMonthlyBudget" class="w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border border-surface-container focus:outline-none focus:ring-2 focus:ring-primary" required/>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="themeSelect">Appearance</label>
-          <select id="themeSelect" class="input-control">
+        <div>
+          <label class="block text-xs uppercase font-bold text-on-surface-variant mb-1" for="modalThemeSelect">Color Theme</label>
+          <select id="modalThemeSelect" class="w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border border-surface-container focus:outline-none focus:ring-2 focus:ring-primary">
             <option value="system">Auto / System Default</option>
             <option value="light">Light Mode</option>
             <option value="dark">Dark Mode</option>
           </select>
         </div>
 
-        <button type="submit" class="btn-primary" style="margin-top: 10px; margin-bottom: 20px;">
-          Save Budget Settings
+        <button type="submit" class="w-full h-12 mt-2 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-sm active:scale-98 transition-all">
+          Save Settings
         </button>
       </form>
 
-      <!-- Custom Categories Management (FR-07) -->
-      <div class="settings-section-divider"></div>
-      <div class="settings-subheading">Manage Categories</div>
-      <div id="categoryListContainer" class="category-mgmt-container">
-        <!-- Dynamically rendered categories -->
-      </div>
+      <!-- Manage Custom Categories -->
+      <div class="pt-3 border-t border-surface-container flex flex-col gap-2">
+        <span class="text-xs uppercase font-bold text-on-surface-variant">Manage Categories (FR-07)</span>
+        <div class="flex flex-wrap gap-1.5" id="modalCategoryList">
+          <!-- Dynamically populated -->
+        </div>
 
-      <!-- Add New Custom Category -->
-      <div class="add-cat-row" style="margin-top: 12px;">
-        <input type="text" id="newCatIconInput" class="input-control" placeholder="Emoji (e.g. 🎮)" style="width: 100px; text-align: center;">
-        <input type="text" id="newCatNameInput" class="input-control" placeholder="Category Name" style="flex: 1;">
-        <input type="color" id="newCatColorInput" class="color-picker-input" value="#3b82f6" title="Category Accent Color">
-        <button type="button" class="btn-secondary" id="addCategoryBtn">+ Add</button>
-      </div>
-
-      <!-- Data Backup, Export & Import (FR-06) -->
-      <div class="settings-section-divider"></div>
-      <div class="settings-subheading">Data Backup & Privacy</div>
-      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
-        SpendSense stores 100% of your records locally in your browser. Export anytime to keep secure off-device backups.
-      </p>
-
-      <div class="backup-buttons-grid">
-        <button type="button" class="btn-secondary" id="exportCsvBtn">
-          📄 Export CSV
-        </button>
-        <button type="button" class="btn-secondary" id="exportJsonBtn">
-          💾 Export JSON
-        </button>
-        <button type="button" class="btn-secondary" id="importTriggerBtn">
-          📥 Restore Backup
-        </button>
-        <button type="button" class="btn-secondary" id="loadSampleDataBtn" style="border-color: #3b82f6; color: #3b82f6;">
-          ✨ Demo Data
-        </button>
-      </div>
-      <input type="file" id="importFileInput" class="hidden" accept=".json,.csv">
-
-      <!-- Danger Zone -->
-      <div style="margin-top: 20px;">
-        <button type="button" class="btn-danger" id="clearAllDataBtn" style="width: 100%;">
-          🗑️ Clear All Expense Data
-        </button>
+        <!-- Add Category Row -->
+        <div class="flex gap-2 items-center pt-1">
+          <input type="text" id="newCatIconInput" placeholder="Emoji" class="w-16 h-10 px-2 rounded-xl bg-surface-container-low text-center text-base border border-surface-container focus:outline-none"/>
+          <input type="text" id="newCatNameInput" placeholder="Category Name" class="flex-1 h-10 px-3 rounded-xl bg-surface-container-low text-xs border border-surface-container focus:outline-none"/>
+          <input type="color" id="newCatColorInput" value="#005c55" class="w-10 h-10 rounded-xl cursor-pointer border border-surface-container p-0.5 bg-transparent"/>
+          <button type="button" class="h-10 px-3 bg-secondary-container text-on-secondary-container rounded-xl text-xs font-bold" id="modalAddCatBtn">
+            + Add
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: EDIT TRANSACTION (FR-05) -->
-  <div id="editTxModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="editTxModalTitle">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h2 id="editTxModalTitle" class="modal-title">✏️ Edit Expense</h2>
-        <button type="button" class="modal-close-btn" id="closeEditModalBtn" aria-label="Close Edit Modal">✕</button>
+  <!-- Modal: Edit Transaction (FR-05) -->
+  <div id="editTxModal" class="modal-overlay">
+    <div class="modal-dialog p-5 flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-2 border-b border-surface-container">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">edit</span>
+          <h2 class="text-base font-bold text-on-surface">Edit Expense</h2>
+        </div>
+        <button type="button" class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container" id="closeEditModalBtn">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
       </div>
 
-      <form id="editTxForm">
-        <input type="hidden" id="editTxId">
+      <form id="editTxForm" class="flex flex-col gap-3">
+        <input type="hidden" id="editTxId"/>
 
-        <div class="form-group">
-          <label class="form-label" for="editAmountInput">Amount</label>
-          <div class="amount-input-wrapper">
-            <span class="currency-symbol" id="editCurrencyPrefix">$</span>
-            <input type="number" step="0.01" min="0.01" id="editAmountInput" class="large-amount-input" required>
-          </div>
+        <div>
+          <label class="block text-xs uppercase font-bold text-on-surface-variant mb-1" for="editAmountInput">Amount</label>
+          <input type="number" step="0.01" min="0.01" id="editAmountInput" class="w-full h-12 px-3 rounded-xl bg-surface-container-low text-on-surface text-lg font-bold border border-surface-container focus:outline-none focus:ring-2 focus:ring-primary" required/>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="editCategorySelect">Category</label>
-          <select id="editCategorySelect" class="input-control" required></select>
+        <div>
+          <label class="block text-xs uppercase font-bold text-on-surface-variant mb-1" for="editCategorySelect">Category</label>
+          <select id="editCategorySelect" class="w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border border-surface-container focus:outline-none focus:ring-2 focus:ring-primary" required></select>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="editNoteInput">Note</label>
-          <input type="text" id="editNoteInput" class="input-control" placeholder="Description">
+        <div>
+          <label class="block text-xs uppercase font-bold text-on-surface-variant mb-1" for="editNoteInput">Note / Description</label>
+          <input type="text" id="editNoteInput" class="w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border border-surface-container focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Expense description"/>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="editDateInput">Date</label>
-          <input type="date" id="editDateInput" class="input-control" required>
+        <div>
+          <label class="block text-xs uppercase font-bold text-on-surface-variant mb-1" for="editDateInput">Date</label>
+          <input type="date" id="editDateInput" class="w-full h-11 px-3 rounded-xl bg-surface-container-low text-on-surface text-sm border border-surface-container focus:outline-none focus:ring-2 focus:ring-primary" required/>
         </div>
 
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-          <button type="submit" class="btn-primary" style="flex: 1;">Save Changes</button>
-          <button type="button" class="btn-danger" id="deleteTxModalBtn">Delete</button>
+        <div class="flex gap-2 pt-2">
+          <button type="submit" class="flex-1 h-12 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-sm active:scale-98 transition-all">
+            Save Changes
+          </button>
+          <button type="button" class="h-12 px-4 bg-error-container text-on-error-container rounded-xl text-sm font-bold hover:bg-error hover:text-white transition-colors" id="editDeleteTxBtn">
+            Delete
+          </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Toast Notification Container -->
-  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+  <!-- Toast Notice Pill -->
+  <div id="toastNotice" class="toast-notice">
+    <span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+    <span id="toastNoticeText">Logged locally in 180ms</span>
+  </div>
 
   <!-- Scripts -->
   <script src="js/chart.umd.min.js"></script>

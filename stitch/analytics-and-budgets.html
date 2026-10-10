@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-secondary-fixed": "#00201d", "secondary-container": "#86f2e4", "on-tertiary-fixed-variant": "#005236", "surface-bright": "#faf8ff", "secondary": "#006a61", "surface": "#faf8ff", "primary-fixed": "#9cf2e8", "on-tertiary-container": "#99ffcd", "inverse-primary": "#80d5cb", "outline-variant": "#bdc9c6", "tertiary-fixed": "#6ffbbe", "surface-variant": "#dae2fd", "on-surface": "#131b2e", "on-error-container": "#93000a", "primary-fixed-dim": "#80d5cb", "secondary-fixed-dim": "#6bd8cb", "tertiary-container": "#007952", "outline": "#6e7977", "on-primary": "#ffffff", "background": "#faf8ff", "on-secondary-fixed-variant": "#005049", "on-error": "#ffffff", "error": "#ba1a1a", "on-tertiary": "#ffffff", "surface-container": "#eaedff", "surface-container-high": "#e2e7ff", "on-secondary": "#ffffff", "surface-tint": "#006a63", "surface-dim": "#d2d9f4", "tertiary": "#005e3f", "tertiary-fixed-dim": "#4edea3", "primary": "#005c55", "surface-container-lowest": "#ffffff", "inverse-surface": "#283044", "on-secondary-container": "#006f66", "primary-container": "#0f766e", "surface-container-highest": "#dae2fd", "on-background": "#131b2e", "inverse-on-surface": "#eef0ff", "on-primary-container": "#a3faef", "error-container": "#ffdad6", "on-primary-fixed": "#00201d", "on-tertiary-fixed": "#002113", "secondary-fixed": "#89f5e7", "on-surface-variant": "#3e4947", "surface-container-low": "#f2f3ff", "on-primary-fixed-variant": "#00504a" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter-lg": "1.5rem", "space-lg": "1rem", "margin": "1rem", "margin-md": "1.5rem", "margin-sm": "1rem", "gutter": "1rem", "space-2xl": "2rem", "space-md": "0.75rem", "gutter-sm": "0.75rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "margin-lg": "2rem", "space-xl": "1.5rem" }, "fontFamily": { "headline-sm": ["Plus Jakarta Sans"], "caption": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "metric-bold": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "display-currency": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "display-currency-mobile": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"] }, "fontSize": { "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "caption": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }], "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }], "metric-bold": ["20px", { "lineHeight": "24px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "display-currency": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700" }], "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "display-currency-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.025em", "fontWeight": "700" }], "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)] pt-safe"><div class="h-16 px-margin-sm flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="SpendSense Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX6XBUxzRF49J1n8OGiA_euqbXq7JEr7RaJaOhrNiPVcRmAU-F4i-8ozhf0VygsJW0m4EJBOi2Nk3y4En1GBxbAKw-8Y3pym9Y_mK031HC5_Xl7fgHvkwzugmbbjTnZn_DlTkEU1QyeN7XptwSDSgoVN1r2qRYN8Deltuw31GlSeXYQisUSy-qfGAUWp617mIbBjPNc0daBA4WW_V8QM2TaCyxLr3cbIlffhyQwkWqE6yzrvkFnw6CCg"/><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface tracking-tight leading-tight">SpendSense</span><span class="font-caption text-caption text-on-surface-variant leading-none hidden">Analytics</span></div><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/30 text-on-secondary-container font-caption text-caption"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>100% Local</span></div><div class="flex items-center gap-space-sm"><span class="font-label-md text-label-md text-on-surface-variant font-medium pr-1">Analytics</span><div class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABAnFn9gXVGC9aSjR-ggVPUj7d35xFgE96kZoazWX7Fl4z2pINKGgRKooLe89ru5hYyaNnSqojbxwYE3OfqhYMjCE1yuecXPHzZyexz3CmJ4B90K3WkVfxFfOdwOUresI1Z058xHOSr0LKMBJOC0DzweKXqF_Ch6fthTFDPvcIT05ZU_ubKvjdrlz13VgenWERTja9Uz3keHEess2Yod3CDSQjtTuDh_zZHnKBn5msbZkmh0eRFEimnQ"/></div></div></div></header><main class="flex flex-col relative w-full px-margin-sm pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full gap-space-lg">
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<div class="flex items-center justify-between">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">Spending Analytics</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Calm insights from purely on-device records</p>
+</div>
+<button aria-label="Adjust Budget Caps" class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-primary active:scale-95 transition-transform shadow-sm" id="open-limit-modal">
+<span class="material-symbols-outlined text-2xl">tune</span>
+</button>
+</div>
+<!-- Segmented Time Filter -->
+<div class="flex p-1 bg-surface-container rounded-xl w-full">
+<button class="filter-tab flex-1 h-9 rounded-lg font-label-sm text-label-sm transition-all text-on-surface-variant hover:text-on-surface" data-range="daily">Daily</button>
+<button class="filter-tab flex-1 h-9 rounded-lg font-label-sm text-label-sm transition-all text-on-surface-variant hover:text-on-surface" data-range="weekly">Weekly</button>
+<button class="filter-tab flex-1 h-9 rounded-lg font-label-sm text-label-sm bg-surface-container-lowest text-primary font-semibold shadow-sm" data-range="monthly">Monthly</button>
+<button class="filter-tab flex-1 h-9 rounded-lg font-label-sm text-label-sm transition-all text-on-surface-variant hover:text-on-surface" data-range="custom">Custom</button>
+</div>
+</div>
+<!-- Hero Overview Summary -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Month Spent</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-base leading-none">trending_up</span>+18% vs prev
+      </span>
+</div>
+<div class="flex items-baseline justify-between">
+<div class="flex flex-col">
+<span class="font-display-currency-mobile text-display-currency-mobile text-on-surface font-bold tracking-tight">$1,240.00</span>
+<span class="font-caption text-caption text-on-surface-variant">compared to $1,050.00 historical average</span>
+</div>
+<div class="w-11 h-11 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+<span class="material-symbols-outlined text-xl">analytics</span>
+</div>
+</div>
+<!-- Split Stats Grid -->
+<div class="grid grid-cols-2 gap-space-sm pt-space-xs">
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col">
+<span class="font-caption text-caption text-on-surface-variant">Daily Average</span>
+<span class="font-metric-bold text-metric-bold text-on-surface mt-0.5">$56.36 <span class="font-caption text-caption text-on-surface-variant font-normal">/ day</span></span>
+<span class="font-caption text-caption text-error font-medium mt-1">+$6.36 over $50 target</span>
+</div>
+<div class="bg-surface-container-low rounded-xl p-3 flex flex-col">
+<span class="font-caption text-caption text-on-surface-variant">Projected Month-End</span>
+<span class="font-metric-bold text-metric-bold text-secondary mt-0.5">$1,480.00</span>
+<span class="font-caption text-caption text-tertiary font-semibold mt-1 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-xs">verified</span> Under $1,500 Cap
+        </span>
+</div>
+</div>
+</div>
+<!-- Budget Ceilings & Threshold Alerts (FR-03) -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-secondary-container/40 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">shield</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Budget Guardrails</h2>
+</div>
+<button class="font-label-sm text-label-sm text-primary font-semibold px-2.5 py-1.5 rounded-lg hover:bg-surface-container transition-colors" id="quick-edit-btn">
+        Edit Limits
+      </button>
+</div>
+<!-- Monthly Limit Card -->
+<div class="bg-surface-container-low rounded-xl p-3.5 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Monthly Spending Ceiling</span>
+<span class="font-caption text-caption text-on-surface-variant">$1,240.00 used of $1,500.00</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
+          82% Consumed
+        </span>
+</div>
+<div class="w-full bg-surface-container-highest h-2.5 rounded-full overflow-hidden">
+<div class="bg-error h-full rounded-full transition-all duration-500" style="width: 82%;"></div>
+</div>
+<div class="flex items-center justify-between font-caption text-caption text-on-surface-variant">
+<span class="flex items-center gap-1 text-on-error-container font-medium">
+<span class="material-symbols-outlined text-sm leading-none">warning</span> Approaching limit threshold
+        </span>
+<span>$260.00 left</span>
+</div>
+</div>
+<!-- Daily Limit Card -->
+<div class="bg-surface-container-low rounded-xl p-3.5 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Today's Daily Target</span>
+<span class="font-caption text-caption text-on-surface-variant">$42.00 used of $50.00 limit</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-semibold">
+          84% Consumed
+        </span>
+</div>
+<div class="w-full bg-surface-container-highest h-2.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full transition-all duration-500" style="width: 84%;"></div>
+</div>
+<div class="flex items-center justify-between font-caption text-caption text-on-surface-variant">
+<span>$8.00 safe buffer for evening</span>
+<span class="text-secondary font-semibold">Paced Well</span>
+</div>
+</div>
+</div>
+<!-- Interactive Spending Trend Chart (FR-04) -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">14-Day Spend Timeline</h2>
+<p class="font-caption text-caption text-on-surface-variant">Threshold marked at $50/day base limit</p>
+</div>
+<div class="flex items-center gap-1.5 font-caption text-caption text-on-surface-variant">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span> Safe
+        <span class="w-2.5 h-2.5 rounded-full bg-error ml-2"></span> Over
+      </div>
+</div>
+<!-- Inline SVG Dynamic Bar Chart -->
+<div class="w-full bg-surface-container-low rounded-xl p-3 flex flex-col">
+<div class="relative w-full h-44">
+<!-- Daily Limit Reference Line ($50 level at y=68) -->
+<div class="absolute inset-x-0 top-[38%] flex items-center z-10 pointer-events-none">
+<div class="w-full h-0 border-t border-dashed border-error/50"></div>
+<span class="bg-error-container text-on-error-container text-[9px] font-bold px-1 rounded-sm ml-1 -translate-y-1/2">$50 Limit</span>
+</div>
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 320 160">
+<!-- Horizontal subtle guide lines -->
+<line stroke="#dae2fd" stroke-dasharray="2,2" stroke-width="0.8" x1="0" x2="320" y1="30" y2="30"></line>
+<line stroke="#dae2fd" stroke-dasharray="2,2" stroke-width="0.8" x1="0" x2="320" y1="90" y2="90"></line>
+<line stroke="#dae2fd" stroke-width="1" x1="0" x2="320" y1="140" y2="140"></line>
+<!-- 14 Bars: values range $25 to $78. $50 = y60 line -->
+<!-- D1: $34 -->
+<rect class="transition-all hover:opacity-80" fill="#005c55" height="46" rx="4" width="14" x="6" y="94"></rect>
+<!-- D2: $48 -->
+<rect class="transition-all hover:opacity-80" fill="#005c55" height="68" rx="4" width="14" x="28" y="72"></rect>
+<!-- D3: $62 (Over) -->
+<rect class="transition-all hover:opacity-80" fill="#ba1a1a" height="88" rx="4" width="14" x="50" y="52"></rect>
+<!-- D4: $41 -->
+<rect class="transition-all hover:opacity-80" fill="#005c55" height="58" rx="4" width="14" x="72" y="82"></rect>
+<!-- D5: $28 -->
+<rect class="transition-all hover:opacity-80" fill="#005c55" height="38" rx="4" width="14" x="94" y="102"></rect>
+<!-- D6: $75 (Over Weekend) -->
+<rect class="transition-all hover:opacity-80" fill="#ba1a1a" height="106" rx="4" width="14" x="116" y="34"></rect>
+<!-- D7: $68 (Over Weekend) -->
+<rect class="transition-all hover:opacity-80" fill="#ba1a1a" height="96" rx="4" width="14" x="138" y="44"></rect>
+<!-- D8: $32 -->
+<rect class="transition-all hover:opacity-80" fill="#005c55" height="44" rx="4" width="14" x="160" y="96"></rect>
+<!-- D9: $45 -->
+<rect class="transition-all hover:opacity-80" fill="#005c55" height="64" rx="4" width="14" x="182" y="76"></rect>
+<!-- D10: $39 -->
+<rect class="transition-all hover:opacity-80" fill="#005c55" height="54" rx="4" width="14" x="204" y="86"></rect>
+<!-- D11: $49 -->
+<rect class="transition-all hover:opacity-80" fill="#005c55" height="70" rx="4" width="14" x="226" y="70"></rect>
+<!-- D12: $78 (Over Party) -->
+<rect class="transition-all hover:opacity-80" fill="#ba1a1a" height="110" rx="4" width="14" x="248" y="30"></rect>
+<!-- D13: $36 -->
+<rect class="transition-all hover:opacity-80" fill="#005c55" height="50" rx="4" width="14" x="270" y="90"></rect>
+<!-- D14 (Today): $42 -->
+<rect class="transition-all hover:opacity-80" fill="#0f766e" height="60" rx="4" width="14" x="292" y="80"></rect>
+</svg>
+</div>
+<div class="flex justify-between items-center px-1 pt-1 font-caption text-caption text-on-surface-variant">
+<span>May 1</span>
+<span>May 5</span>
+<span>May 9</span>
+<span>May 14 (Today)</span>
+</div>
+</div>
+</div>
+<!-- Category Breakdown Module -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Category Ceilings</h2>
+<span class="font-caption text-caption text-on-surface-variant">4 active budget departments</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-medium">Reset in 16d</span>
+</div>
+<div class="flex flex-col gap-space-md">
+<!-- 1. Food: 93% Danger -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-error-container/60 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-base">restaurant</span>
+</div>
+<div>
+<span class="font-label-md text-label-md text-on-surface">Food &amp; Dining</span>
+<span class="font-caption text-caption text-on-surface-variant block">$558.00 of $600.00</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm font-bold text-error">93% Limit</span>
+<span class="font-caption text-caption text-on-surface-variant block">45% of total</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-error h-full rounded-full" style="width: 93%;"></div>
+</div>
+</div>
+<!-- 2. Bills: 99% Warning/Caution -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-base">receipt</span>
+</div>
+<div>
+<span class="font-label-md text-label-md text-on-surface">Recurring Bills</span>
+<span class="font-caption text-caption text-on-surface-variant block">$248.00 of $250.00</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm font-bold text-secondary">99% Limit</span>
+<span class="font-caption text-caption text-on-surface-variant block">20% of total</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 99%;"></div>
+</div>
+</div>
+<!-- 3. Transport: 77% Safe -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed/40 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-base">directions_subway</span>
+</div>
+<div>
+<span class="font-label-md text-label-md text-on-surface">Transport &amp; Transit</span>
+<span class="font-caption text-caption text-on-surface-variant block">$310.00 of $400.00</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm font-bold text-tertiary">77% Safe</span>
+<span class="font-caption text-caption text-on-surface-variant block">25% of total</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 77%;"></div>
+</div>
+</div>
+<!-- 4. Shopping & Fun: 49% Safe -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary-fixed/50 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-base">shopping_bag</span>
+</div>
+<div>
+<span class="font-label-md text-label-md text-on-surface">Shopping &amp; Leisure</span>
+<span class="font-caption text-caption text-on-surface-variant block">$124.00 of $250.00</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm font-bold text-tertiary">49% Safe</span>
+<span class="font-caption text-caption text-on-surface-variant block">10% of total</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 49%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Smart Local Insight Card -->
+<div class="bg-primary-container text-on-primary-container rounded-2xl p-space-lg shadow-sm flex items-start gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-on-primary-container/15 flex-shrink-0 flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-2xl">tips_and_updates</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-md text-label-md font-semibold text-on-primary">Weekend Spending Pattern Detected</span>
+<p class="font-body-md text-body-md text-on-primary-container leading-relaxed">
+        You spend <strong>38% more</strong> on Food during weekends. Cooking twice this upcoming Saturday/Sunday will save an estimated <strong>~$45.00</strong>.
+      </p>
+<div class="pt-1">
+<button class="inline-flex items-center gap-1 font-label-sm text-label-sm font-bold text-on-primary hover:underline">
+          Create weekend reminder <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick Edit Budget Modal / Drawer (Client-side interactive) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm hidden items-end justify-center transition-opacity" id="limits-modal">
+<div class="bg-surface-container-lowest w-full max-w-md rounded-t-3xl p-space-lg flex flex-col gap-space-md shadow-xl max-h-[751px] overflow-y-auto">
+<div class="w-12 h-1.5 bg-surface-variant rounded-full mx-auto"></div>
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Adjust Budget Thresholds</h3>
+<p class="font-caption text-caption text-on-surface-variant">Stored strictly on this device</p>
+</div>
+<button aria-label="Close" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" id="close-limit-modal">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-space-md">
+<!-- Monthly Limit Field -->
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant" for="monthly-input">Monthly Spending Ceiling ($)</label>
+<div class="flex items-center bg-surface-container-low rounded-xl px-3 h-12">
+<span class="font-body-lg text-body-lg text-on-surface-variant mr-1">$</span>
+<input class="bg-transparent w-full text-on-surface font-metric-bold text-metric-bold outline-none" id="monthly-input" type="number" value="1500"/>
+</div>
+</div>
+<!-- Daily Target Field -->
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant" for="daily-input">Daily Soft Limit ($)</label>
+<div class="flex items-center bg-surface-container-low rounded-xl px-3 h-12">
+<span class="font-body-lg text-body-lg text-on-surface-variant mr-1">$</span>
+<input class="bg-transparent w-full text-on-surface font-metric-bold text-metric-bold outline-none" id="daily-input" type="number" value="50"/>
+</div>
+</div>
+<!-- Category Limits -->
+<div class="flex flex-col gap-2 pt-1">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Category Allocations</span>
+<div class="flex items-center justify-between bg-surface-container-low p-2.5 rounded-xl">
+<span class="font-body-md text-body-md text-on-surface">Food &amp; Dining</span>
+<div class="flex items-center w-28 bg-surface-container-lowest px-2 py-1 rounded-lg">
+<span class="text-on-surface-variant text-xs mr-1">$</span>
+<input class="w-full text-right font-semibold text-on-surface outline-none text-sm" type="number" value="600"/>
+</div>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low p-2.5 rounded-xl">
+<span class="font-body-md text-body-md text-on-surface">Transport</span>
+<div class="flex items-center w-28 bg-surface-container-lowest px-2 py-1 rounded-lg">
+<span class="text-on-surface-variant text-xs mr-1">$</span>
+<input class="w-full text-right font-semibold text-on-surface outline-none text-sm" type="number" value="400"/>
+</div>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low p-2.5 rounded-xl">
+<span class="font-body-md text-body-md text-on-surface">Bills</span>
+<div class="flex items-center w-28 bg-surface-container-lowest px-2 py-1 rounded-lg">
+<span class="text-on-surface-variant text-xs mr-1">$</span>
+<input class="w-full text-right font-semibold text-on-surface outline-none text-sm" type="number" value="250"/>
+</div>
+</div>
+</div>
+<button class="w-full h-12 rounded-xl bg-primary text-on-primary font-label-md text-label-md font-semibold active:scale-[0.98] transition-transform shadow-sm flex items-center justify-center gap-1.5 mt-2" id="save-limits-btn">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+          Save Limits Locally
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    // Filter chips selection micro-interaction
+    const tabs = document.querySelectorAll('.filter-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.classList.remove('bg-surface-container-lowest', 'text-primary', 'font-semibold', 'shadow-sm');
+          t.classList.add('text-on-surface-variant');
+        });
+        tab.classList.add('bg-surface-container-lowest', 'text-primary', 'font-semibold', 'shadow-sm');
+        tab.classList.remove('text-on-surface-variant');
+      });
+    });
+
+    // Modal Sheet toggle
+    const modal = document.getElementById('limits-modal');
+    const openBtn = document.getElementById('open-limit-modal');
+    const quickEditBtn = document.getElementById('quick-edit-btn');
+    const closeBtn = document.getElementById('close-limit-modal');
+    const saveBtn = document.getElementById('save-limits-btn');
+
+    function openModal() {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openModal);
+    if (quickEditBtn) quickEditBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (saveBtn) saveBtn.addEventListener('click', () => {
+      closeModal();
+    });
+
+    // Close on outside overlay click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  })();
+</script></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.04)]" data-active-classes="text-primary font-semibold"><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-on-surface-variant transition-colors hover:text-on-surface" data-path="dashboard" href="#"><span class="material-symbols-outlined text-2xl">home</span><span class="font-caption text-caption">Dashboard</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-on-surface-variant transition-colors hover:text-on-surface" data-path="add-transaction" href="#"><div class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-md active:scale-95 transition-transform"><span class="material-symbols-outlined text-2xl leading-none">add</span></div><span class="font-caption text-caption">Add</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] transition-colors text-primary font-semibold" data-path="analytics" href="#"><span class="material-symbols-outlined text-2xl">pie_chart</span><span class="font-caption text-caption">Analytics</span></a><a class="flex flex-col items-center justify-center gap-0.5 min-w-[56px] min-h-[48px] text-on-surface-variant transition-colors hover:text-on-surface" data-path="history" href="#"><span class="material-symbols-outlined text-2xl">receipt_long</span><span class="font-caption text-caption">History</span></a></div></nav></body></html>
