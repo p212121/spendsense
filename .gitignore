@@ -1,0 +1,23 @@
+# Python virtual environment
+venv/
+ENV/
+env/
+.env
+
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest / coverage cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Node.js
+node_modules/
+npm-debug.log
