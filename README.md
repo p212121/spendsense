@@ -2,10 +2,12 @@
 
 > **Industry-Grade Final Year Engineering Project:** Microservice architecture combining Machine Learning (Isolation Forest Anomaly Detection), Computer Vision / OCR (Receipt Entity Extraction), and Generative AI (Conversational RAG) with complete Docker, CI/CD, and Cloud Deployment.
 
+[![Live Web App](https://img.shields.io/badge/Live_Web_App-GitHub_Pages-22c55e?style=for-the-badge&logo=github)](https://p212121.github.io/spendsense/)
 [![Live Swagger API](https://img.shields.io/badge/Live_API-Render_Cloud-00c58e?style=for-the-badge&logo=render)](https://spendsense-ai-bwk4.onrender.com/docs)
 [![API Health](https://img.shields.io/badge/Health_Check-Passing_Online-4c1?style=for-the-badge)](https://spendsense-ai-bwk4.onrender.com/health)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions)](https://github.com/p212121/spendsense/actions)
 
+* **📱 Live Web Application:** [https://p212121.github.io/spendsense/](https://p212121.github.io/spendsense/)
 * **🌐 Live Production API Docs:** [https://spendsense-ai-bwk4.onrender.com/docs](https://spendsense-ai-bwk4.onrender.com/docs)
 * **🔍 Live Health Check:** [https://spendsense-ai-bwk4.onrender.com/health](https://spendsense-ai-bwk4.onrender.com/health)
 
