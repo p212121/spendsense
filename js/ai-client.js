@@ -45,25 +45,28 @@ const SpendSenseAI = {
   },
 
   renderStatusPill(online, labelText) {
-    let pill = document.getElementById("aiStatusPill");
-    if (!pill) {
-      const header = document.querySelector("header .flex.items-center.gap-2\\.5");
-      if (header) {
-        pill = document.createElement("span");
-        pill.id = "aiStatusPill";
-        pill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold";
-        header.appendChild(pill);
-      }
+    const textEl = document.getElementById("aiStatusBadgeText");
+    const desktopBadge = document.getElementById("aiStatusBadge");
+    const mobileBadge = document.getElementById("aiStatusBadgeMobile");
+
+    if (textEl) {
+      textEl.textContent = labelText || (online ? "Cloud AI Active" : "AI Offline");
     }
-    if (pill) {
+
+    [desktopBadge, mobileBadge].forEach(badge => {
+      if (!badge) return;
       if (online) {
-        pill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 text-[11px] font-semibold";
-        pill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>${labelText || "AI Active"}`;
+        badge.className = badge.id === "aiStatusBadge" 
+          ? "hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[11px] font-semibold border border-emerald-300/50 dark:border-emerald-800"
+          : "sm:hidden flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold";
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span><span>${badge.id === "aiStatusBadge" ? (labelText || "Cloud AI Active") : "AI"}</span>`;
       } else {
-        pill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-[11px] font-semibold";
-        pill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>AI Offline';
+        badge.className = badge.id === "aiStatusBadge"
+          ? "hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 text-[11px] font-semibold border border-amber-300/50 dark:border-amber-800"
+          : "sm:hidden flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 text-[10px] font-bold";
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>${badge.id === "aiStatusBadge" ? "AI Offline" : "Off"}</span>`;
       }
-    }
+    });
   },
 
   async predictAnomaly(transaction) {
