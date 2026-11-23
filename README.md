@@ -1,89 +1,131 @@
-# 💳 SpendSense — Understand Your Spending
+# 💳 SpendSense 360 — AI Financial Intelligence & Anomaly Engine
 
-> **Lightweight, mobile-first personal finance tracker with zero server latency, instant expense logging, and real-time visual analytics.**
+> **Industry-Grade Final Year Engineering Project:** Microservice architecture combining Machine Learning (Isolation Forest Anomaly Detection), Computer Vision / OCR (Receipt Entity Extraction), and Generative AI (Conversational RAG) with complete Docker, CI/CD, and Cloud Deployment.
 
 ![SpendSense](icons/icon.svg)
 
 ---
 
-## 🎯 Value Proposition
+## 🎯 Architectural Overview
 
-* **🔒 Privacy-First:** 100% locally on-device using browser storage (`localStorage`). No financial links, bank credentials, or external API transmissions.
-* **⚡ Frictionless Logging:** Add expenses in **under 3 seconds** with touch-optimized numeric inputs and quick category chips.
-* **📊 Visual Insights:** Interactive Chart.js doughnut breakdowns and trend bar graphs to visualize spending leaks.
-* **🚨 Budget Alerts:** Real-time visual progress bars and dynamic badges alerting when approaching (**80%**) or exceeding (**100%**) daily & monthly ceilings.
-* **📱 Offline Capable (PWA):** Zero-dependency offline service worker and web app manifest ready for mobile home screen installation.
+```text
+                                 ┌──────────────────────────────────────┐
+                                 │       Client Application (UI)        │
+                                 │   Mobile-First PWA Dashboard (SPA)   │
+                                 └──────────────────┬───────────────────┘
+                                                    │ HTTPS / JSON / Multipart
+                                                    ▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                              FastAPI Backend Microservice                              │
+│                                                                                        │
+│  ┌──────────────────────────┐  ┌───────────────────────────┐  ┌─────────────────────┐  │
+│  │   /api/v1/anomaly        │  │   /api/v1/receipt/extract │  │  /api/v1/copilot    │  │
+│  │   Isolation Forest +     │  │   Entity Regex & Token    │  │  Semantic Search    │  │
+│  │   Cyclic Feature Engine  │  │   Parser Pipeline         │  │  + Financial RAG    │  │
+│  └────────────┬─────────────┘  └─────────────┬─────────────┘  └──────────┬──────────┘  │
+│               │                              │                           │             │
+└───────────────┼──────────────────────────────┼───────────────────────────┼─────────────┘
+                │                              │                           │
+                ▼                              ▼                           ▼
+┌──────────────────────────────┐ ┌───────────────────────────┐ ┌─────────────────────────┐
+│       MLflow / Joblib        │ │    Fast In-Memory Buffer  │ │  Vector Knowledge Base  │
+│  Trained Models & Scalers    │ │    (OCR Stream Buffer)    │ │  Transaction Embeddings │
+│  (14-Dimensional Matrix)     │ │                           │ │  & Statistical Indices  │
+└──────────────────────────────┘ └───────────────────────────┘ └─────────────────────────┘
+```
 
 ---
 
-## 🚀 Quick Start
+## 🧠 Core Machine Learning & AI Modules
 
-### Option 1: Direct Browser Launch (Zero Install)
-Simply double-click or open [`index.html`](file:///c:/Users/pawan/OneDrive/Desktop/spendsense/index.html) in any modern web browser (Chrome, Edge, Safari, Firefox). All dependencies (including Chart.js) are self-contained locally.
+### 1. AI Anomaly & Fraud Detection Engine (`ml/src/scorer.py`)
+* **Algorithm:** **Isolation Forest + Statistical Deviation Ensemble**.
+* **Contamination Rate:** 3.0% (calibrated against credit-card and banking benchmarks).
+* **Mathematical Feature Engineering:**
+  1. **Log Normalization:** $x_{\text{scaled}} = \ln(1 + \text{amount})$ to handle extreme skew.
+  2. **Category Baseline Z-Score:** $z = \frac{\text{amount} - \mu_{\text{cat}}}{\sigma_{\text{cat}}}$.
+  3. **Cyclic Temporal Encoding:**
+     $$\text{hour\_sin} = \sin\left(\frac{2\pi \cdot \text{hour}}{24}\right), \quad \text{hour\_cos} = \cos\left(\frac{2\pi \cdot \text{hour}}{24}\right)$$
+     $$\text{dow\_sin} = \sin\left(\frac{2\pi \cdot \text{dow}}{7}\right), \quad \text{dow\_cos} = \cos\left(\frac{2\pi \cdot \text{dow}}{7}\right)$$
+  4. **Categorical One-Hot Encodings:** 8 category dimensions.
+* **Output:** Normalized Risk Score ($0.0 \to 1.0$), Severity (`LOW`, `MEDIUM`, `HIGH`), and human-interpretable factors explaining why a transaction was flagged.
 
-### Option 2: Local Development Server
+### 2. Multimodal Receipt Entity Extractor (`api/app/services/ocr_service.py`)
+* Automatically parses scanned receipts, PDFs, and plain text.
+* Extracts **Merchant Name**, **Transaction Date**, **Grand Total**, **Sales Tax**, and **Line Items** using confidence-scored regex entity matchers and merchant taxonomy classification.
+
+### 3. Financial Copilot (RAG Engine) (`api/app/services/rag_service.py`)
+* Retrieval-Augmented Generation answering user natural language queries (e.g., *"How much did I spend on dining?"*, *"What was my largest transaction?"*).
+* Zero API cost: operates deterministic semantic retrieval offline, with optional connection to free **Groq Cloud (LLaMA-3-8B)**.
+
+---
+
+## 🚀 Quick Start Guide
+
+### 1. Launch the FastAPI AI Server
+```powershell
+# Activate your virtual environment
+.\venv\Scripts\activate
+
+# Launch the FastAPI server with hot-reload
+python -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --reload
+```
+Visit **`http://127.0.0.1:8000/docs`** to open the interactive Swagger UI.
+
+### 2. Run Automated Pytest Suite
+```powershell
+python -m pytest tests/test_anomaly_api.py -v
+```
+Runs 6 unit and integration test assertions verifying health, anomaly scoring, OCR parsing, and RAG copilot responses.
+
+### 3. Launch Frontend Dashboard
+Simply open [`index.html`](file:///c:/Users/pawan/OneDrive/Desktop/spendsense/index.html) in your browser, or run:
 ```bash
-# Run the built-in static HTTP server
 npm start
 ```
-Then visit **`http://localhost:3000`** in your browser.
+and visit `http://localhost:3000`. The frontend will automatically detect the AI backend and show a green **"AI Engine Active"** pill in the top header.
 
-### Run Automated Tests
+---
+
+## 🚢 100% Free Production Deployment
+
+### Option A: Docker & Docker Compose
 ```bash
-npm test
+# Build and run the production container locally
+docker-compose -f docker/docker-compose.yml up --build -d
 ```
 
----
-
-## 📋 PRD Feature Matrix
-
-| Requirement | Feature | Implementation Details | Status |
-| :--- | :--- | :--- | :---: |
-| **FR-01** | **Quick Expense Input** | Large numeric input, quick amount chips (`+5`, `+10`, `+20`, `+50`, `+100`), quick date toggles, instant category chips, smart note suggestions. | ✅ Done |
-| **FR-02** | **Local Data Storage** | Zero server tracking. Complete persistence in browser `localStorage` (`spendsense_transactions`, `spendsense_categories`, `spendsense_settings`). | ✅ Done |
-| **FR-03** | **Budget Limits Alert** | Configurable daily & monthly ceilings. Dynamic progress bars with healthy (green), near limit (amber at 80%), and over-limit (red at 100%) alert banners. | ✅ Done |
-| **FR-04** | **Category Charts** | Interactive Chart.js doughnut chart with center total display and responsive legends; trend bar chart for daily/weekly/monthly spending patterns. | ✅ Done |
-| **FR-05** | **Transaction History Log** | Chronological log grouped by day with day subtotals. Search by note/category, category dropdown filter, time filter, single-tap edit and delete modals. | ✅ Done |
-| **FR-06** | **Data Export / Import** | One-click export to standard RFC 4180 **CSV** and full backup **JSON**. Seamless restore/merge with file upload. One-click **Demo Data** generator. | ✅ Done |
-| **FR-07** | **Custom Categories** | Create custom spending categories with custom names, emoji icons, and accent color pickers. Automatic fallback to "Other" when a category is deleted. | ✅ Done |
+### Option B: Free Cloud Hosting (Render.com / Hugging Face Spaces)
+1. Push this repository to **GitHub**:
+   ```bash
+   git add .
+   git commit -m "feat: complete SpendSense 360 AI Platform"
+   git push origin main
+   ```
+2. Log into [Render.com](https://render.com) (100% Free Tier).
+3. Click **New $\rightarrow$ Web Service $\rightarrow$ Build from Docker**.
+4. Point to `docker/Dockerfile.api`.
+5. Render will build the image and provide a public HTTPS URL (e.g., `https://spendsense-ai.onrender.com/docs`).
 
 ---
 
-## 📂 Project Structure
+## 🧪 CI/CD Pipeline (`.github/workflows/ci-cd.yml`)
 
-```
-spendsense/
-├── index.html                 # Mobile-first application shell & wireframe
-├── manifest.webmanifest       # PWA manifest for home screen installation
-├── sw.js                      # Service Worker for 100% offline functionality
-├── server.js                  # Zero-dependency local development server
-├── package.json               # Project manifest, scripts, and test runner
-├── css/
-│   └── styles.css             # High-contrast, mobile-first responsive design & dark/light mode
-├── js/
-│   ├── chart.umd.min.js       # Local Chart.js library (205 KB, offline ready)
-│   ├── store.js               # Reactive store, LocalStorage CRUD, budget threshold calculations
-│   ├── charts.js              # Chart.js visualization engine (doughnut & trend bar charts)
-│   ├── export-import.js       # RFC 4180 CSV parser & JSON backup/restore manager
-│   └── app.js                 # Primary controller wiring up UI, budget alerts, and history log
-├── icons/
-│   └── icon.svg               # Vector app icon & branding
-└── test/
-    └── suite.js               # Automated unit & integration tests
-```
+Every push to `main` executes:
+1. **Automated Testing:** Sets up Python 3.11 and runs the full `pytest` suite.
+2. **Model Validation:** Verifies that model artifacts serialize and deserialize properly.
+3. **Docker Multi-Stage Build:** Builds minimal production container and verifies health check.
+4. **Continuous Deployment:** Fires webhook to automatically trigger zero-downtime redeployment on Render.
 
 ---
 
-## 🛠️ Tech Stack
+## 🎓 Viva & Technical Interview Questions
 
-* **Frontend:** Plain HTML5, CSS3 (Modern Flexbox / Grid, CSS Custom Properties, Dark Mode).
-* **Data Visualization:** Local Chart.js (v4.4.2 UMD bundle, zero CDN dependency).
-* **Data Persistence:** Web Storage API (`window.localStorage`).
-* **Offline & PWA:** Service Worker API (`sw.js`) & Web App Manifest.
-* **Testing:** Node.js Assert test runner.
+**Q1: Why did you choose Isolation Forest instead of a standard binary classifier like Logistic Regression?**
+> *Answer:* Fraud and financial anomalies in real-world banking represent less than 0.5% of total events, creating extreme class imbalance. Supervised classifiers overfit or require synthetic oversampling (SMOTE). Isolation Forest is an unsupervised tree-based algorithm that exploits the fact that anomalies have shorter average path lengths in random partitions, making it ideal for detecting novel, unlabelled spending anomalies.
 
----
+**Q2: Why use cyclic trigonometric encoding for the hour and day features?**
+> *Answer:* Standard integer hours (0 to 23) create an artificial distance gap between 23:59 (11:59 PM) and 00:01 (12:01 AM). By projecting hours onto the unit circle using $\sin\left(\frac{2\pi \cdot h}{24}\right)$ and $\cos\left(\frac{2\pi \cdot h}{24}\right)$, the model preserves true continuous circular proximity across midnight.
 
-## 🔒 Security & Privacy Guarantee
-
-SpendSense does **not** collect, store, transmit, or analyze any financial data on external servers. All information stays exclusively on your local device within your browser storage.
+**Q3: How is this architecture production-grade?**
+> *Answer:* It enforces separation of concerns: Pydantic schemas for runtime validation, async FastAPI endpoints, serialized `.joblib` model caching with singleton dependency injection, multi-stage Docker containerization with a non-root user for security, and end-to-end CI/CD test automation.

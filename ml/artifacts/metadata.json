@@ -1,0 +1,32 @@
+{
+  "model_type": "IsolationForest + Category Z-Score Ensemble",
+  "contamination": 0.03,
+  "n_samples_trained": 5000,
+  "features": [
+    "log_amount",
+    "category_z_score",
+    "hour_sin",
+    "hour_cos",
+    "dow_sin",
+    "dow_cos",
+    "cat_groceries",
+    "cat_dining",
+    "cat_entertainment",
+    "cat_utilities",
+    "cat_healthcare",
+    "cat_travel",
+    "cat_shopping",
+    "cat_other"
+  ],
+  "categories_supported": [
+    "Groceries",
+    "Dining",
+    "Entertainment",
+    "Utilities",
+    "Healthcare",
+    "Travel",
+    "Shopping",
+    "Other"
+  ],
+  "status": "production_ready"
+}
