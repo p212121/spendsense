@@ -73,8 +73,12 @@ body {
 }
 
 /* Safe area utilities */
-.pb-safe {
-  padding-bottom: calc(var(--safe-bottom) + 64px);
+.content-safe {
+  padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 96px);
+}
+
+.nav-safe {
+  padding-bottom: env(safe-area-inset-bottom, 6px);
 }
 
 .pt-safe {
