@@ -1,29 +1,50 @@
 /**
  * SpendSense 360 AI Integration Client
- * Connects frontend UI with local FastAPI AI backend (http://127.0.0.1:8000)
+ * Connects frontend UI with Cloud & Local FastAPI AI backend
  */
 
-const AI_API_BASE = "http://127.0.0.1:8000/api/v1";
+// Production Cloud URL (Render) with automatic fallback to Localhost
+const CLOUD_API_BASE = "https://spendsense-ai-bwk4.onrender.com";
+const LOCAL_API_BASE = "http://127.0.0.1:8000";
 
 const SpendSenseAI = {
   isBackendAvailable: false,
+  activeEndpoint: null,
 
   async init() {
+    // 1. Try Production Cloud API first
     try {
-      const res = await fetch("http://127.0.0.1:8000/health", { mode: "cors" });
+      const res = await fetch(`${CLOUD_API_BASE}/health`, { mode: "cors" });
       if (res.ok) {
         this.isBackendAvailable = true;
-        console.log(" SpendSense 360 AI Engine: Online");
-        this.renderStatusPill(true);
+        this.activeEndpoint = `${CLOUD_API_BASE}/api/v1`;
+        console.log(" SpendSense 360 AI Engine: Online (Cloud Production)");
+        this.renderStatusPill(true, "Cloud AI Active");
+        return;
+      }
+    } catch (e) {
+      console.log(" Cloud API sleeping or unreachable, testing local fallback...");
+    }
+
+    // 2. Try Localhost API fallback
+    try {
+      const res = await fetch(`${LOCAL_API_BASE}/health`, { mode: "cors" });
+      if (res.ok) {
+        this.isBackendAvailable = true;
+        this.activeEndpoint = `${LOCAL_API_BASE}/api/v1`;
+        console.log(" SpendSense 360 AI Engine: Online (Localhost)");
+        this.renderStatusPill(true, "Local AI Active");
+        return;
       }
     } catch (e) {
       this.isBackendAvailable = false;
-      console.log(" SpendSense 360 AI Engine: Offline (Run api/main.py)");
-      this.renderStatusPill(false);
+      this.activeEndpoint = null;
+      console.log(" SpendSense 360 AI Engine: Offline");
+      this.renderStatusPill(false, "AI Offline");
     }
   },
 
-  renderStatusPill(online) {
+  renderStatusPill(online, labelText) {
     let pill = document.getElementById("aiStatusPill");
     if (!pill) {
       const header = document.querySelector("header .flex.items-center.gap-2\\.5");
@@ -37,7 +58,7 @@ const SpendSenseAI = {
     if (pill) {
       if (online) {
         pill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 text-[11px] font-semibold";
-        pill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>AI Engine Active';
+        pill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>${labelText || "AI Active"}`;
       } else {
         pill.className = "inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-[11px] font-semibold";
         pill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>AI Offline';
@@ -46,9 +67,9 @@ const SpendSenseAI = {
   },
 
   async predictAnomaly(transaction) {
-    if (!this.isBackendAvailable) return null;
+    if (!this.isBackendAvailable || !this.activeEndpoint) return null;
     try {
-      const res = await fetch(`${AI_API_BASE}/anomaly/predict`, {
+      const res = await fetch(`${this.activeEndpoint}/anomaly/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -68,12 +89,12 @@ const SpendSenseAI = {
   },
 
   async parseReceiptText(text) {
-    if (!this.isBackendAvailable) {
-      alert("AI Backend is offline. Ensure 'python -m uvicorn api.main:app' is running.");
+    if (!this.isBackendAvailable || !this.activeEndpoint) {
+      alert("AI Backend is initializing. Please wait a few seconds.");
       return null;
     }
     try {
-      const res = await fetch(`${AI_API_BASE}/receipt/parse-text`, {
+      const res = await fetch(`${this.activeEndpoint}/receipt/parse-text`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text })
@@ -88,13 +109,13 @@ const SpendSenseAI = {
   },
 
   async queryCopilot(query, transactions) {
-    if (!this.isBackendAvailable) {
+    if (!this.isBackendAvailable || !this.activeEndpoint) {
       return {
-        answer: "AI Backend is currently offline. Please run the local FastAPI service on port 8000."
+        answer: "AI Cloud Engine is spinning up or offline. Please refresh in 30 seconds."
       };
     }
     try {
-      const res = await fetch(`${AI_API_BASE}/copilot/query`, {
+      const res = await fetch(`${this.activeEndpoint}/copilot/query`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query, transactions })
