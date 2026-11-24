@@ -49,12 +49,28 @@ html.dark {
   --color-on-error-container: #fca5a5;
 }
 
+html, body {
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--color-surface);
   color: var(--color-on-surface);
   -webkit-font-smoothing: antialiased;
-  overscroll-behavior-y: none;
+}
+
+/* Ensure chart canvases never block vertical page scrolling on mobile */
+canvas {
+  touch-action: pan-y !important;
+}
+
+/* Ensure every view has massive breathing room above the fixed bottom bar */
+.app-view {
+  padding-bottom: 140px !important;
 }
 
 /* Universal Icon Configuration */
